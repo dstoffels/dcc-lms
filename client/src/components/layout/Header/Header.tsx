@@ -5,7 +5,7 @@ import { Tab, Tabs } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
-const pages = ['Account', 'Courses', 'Dashboard'];
+const pages = ['Dashboard', 'Account'];
 
 const Header = ({}) => {
 	const router = useRouter();

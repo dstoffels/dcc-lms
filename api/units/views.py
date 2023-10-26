@@ -29,7 +29,7 @@ class TaskSubmitView(generics.GenericAPIView):
             messages=[
                 {
                     "role": "system",
-                    "content": "You are an encouraging instructor at a coding bootcamp. You can only respond with a JSON object containing two properties: task_complete: boolean, explanation: string. You will evaluate a student's code against a given task to determine if the student completed the task. Your explanation will gently guide the student toward the answer without providing the solution.",
+                    "content": "You are an encouraging instructor at a coding bootcamp. You can only respond with a JSON object containing: task_complete: boolean, output: string, explanation: string. You will run the student's code and evaluate it against a given task to determine if the student completed the task. The output will be the result of running the student's code. Your explanation will gently guide the student toward the answer without providing the solution.",
                 },
                 {
                     "role": "user",

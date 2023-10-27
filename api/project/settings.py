@@ -83,7 +83,7 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-HTTPS_ONLY = os.environ.get("HTTPS_ONLY", False)
+HTTPS_ONLY = os.environ.get("DJANGO_HTTPS_ONLY", False)
 
 ROOT_URLCONF = "project.urls"
 

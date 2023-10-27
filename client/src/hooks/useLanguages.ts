@@ -1,5 +1,5 @@
 import { loader } from '@monaco-editor/react';
-// import judgeAPI from '../utils/judgeAPI';
+import judgeAPI from '../utils/judgeAPI';
 import React, { useState, useEffect } from 'react';
 
 export default function useLanguages() {
@@ -8,25 +8,25 @@ export default function useLanguages() {
 	const fetchLanguages = async () => {
 		const monaco = await loader.init().then((monaco) => monaco);
 		const monacoLangs = monaco.languages.getLanguages();
-		setLanguages(monacoLangs);
 
-		// const response = await judgeAPI.get(`/languages`);
+		const response = await judgeAPI.get(`/languages`);
 
-		// const parsedLangs = response.data
-		// 	.map((lang: any) => {
-		// 		let truncName = '';
-		// 		for (let i = 0; i < lang.name.length; i++) {
-		// 			truncName += lang.name[i];
-		// 			if (lang.name[i + 1] === '(') break;
-		// 		}
-		// 		truncName = truncName.trimEnd();
+		const parsedLangs = response.data
+			.map((lang: any) => {
+				let truncName = '';
+				for (let i = 0; i < lang.name.length; i++) {
+					truncName += lang.name[i];
+					if (lang.name[i + 1] === '(') break;
+				}
+				truncName = truncName.trimEnd();
 
-		// 		for (var ml of monacoLangs) {
-		// 			if (ml.aliases?.includes(truncName))
-		// 				return { ...lang, displayName: truncName, aliases: ml.aliases, monacoName: ml.id };
-		// 		}
-		// 	})
-		// 	.filter((lang: any) => Boolean(lang));
+				for (var ml of monacoLangs) {
+					if (ml.aliases?.includes(truncName))
+						return { ...lang, displayName: truncName, aliases: ml.aliases, monacoName: ml.id };
+				}
+			})
+			.filter((lang: any) => Boolean(lang));
+		setLanguages(parsedLangs);
 	};
 
 	useEffect(() => {

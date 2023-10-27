@@ -1,26 +1,27 @@
 import React from 'react';
 import useLanguages from '../../hooks/useLanguages';
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 const LanguageSelector = ({ value, onChange, disabled }: LanguageSelectorProps) => {
 	const languages = useLanguages();
 	const languageOptions = languages.map((l: any) => (
-		<option key={l.id} value={l.monacoName}>
+		<MenuItem key={l.id} value={l.monacoName}>
 			{l.name}
-		</option>
+		</MenuItem>
 	));
 
 	return (
-		<div className="">
-			<label className="block text-xs">Language</label>
-			<select
-				disabled={disabled}
-				className="border rounded px-1 py-2"
+		<FormControl>
+			<InputLabel>Language</InputLabel>
+			<Select
+				label="Language"
 				value={value}
 				onChange={(e) => onChange(e.target.value)}
+				disabled={disabled}
 			>
 				{languageOptions}
-			</select>
-		</div>
+			</Select>
+		</FormControl>
 	);
 };
 

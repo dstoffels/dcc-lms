@@ -1,0 +1,1 @@
+The runner container is an image that gets spun up to run incoming code safely. It contains all the dependencies and tools needed to run code in a sandboxed environment. This ensures code runs isolated from the host machine.

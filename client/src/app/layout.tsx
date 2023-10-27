@@ -16,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<ThemeRegistry options={{ key: 'mui' }}>
 			<html lang="en">
 				<body className={inter.className}>
-					<Header />
+					{/* <Header /> */}
 					<main className="p-5">{children}</main>
 				</body>
 			</html>

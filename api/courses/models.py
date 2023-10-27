@@ -10,11 +10,12 @@ class Course(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     start_date = models.DateField(blank=True)
     end_date = models.DateField(blank=True)
-    is_template = models.BooleanField(default=False)
     prerequisites = models.ManyToManyField("self", symmetrical=False, blank=True)
     modules = models.ManyToManyField("modules.Module", through="CourseModule", blank=True, related_name="courses")
     students = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="courses")
     tags = models.ManyToManyField("Tag", blank=True, related_name="courses")
+    is_template = models.BooleanField(default=False)
+    is_public = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title

@@ -14,7 +14,7 @@ app.post('/run', async (req, res) => {
 		const { code, language } = req.body;
 
 		const container = await docker.createContainer({
-			Image: 'runner',
+			Image: 'dstoffels/code-runner:1',
 			Cmd: getCmd(language, code),
 			Tty: true,
 		});

@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "courses",
     "modules",
     "units",
+    "tracks",
 ]
 
 MIDDLEWARE = [

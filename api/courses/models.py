@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.db.models import Q
 
 
 class Course(models.Model):
@@ -12,7 +13,9 @@ class Course(models.Model):
     end_date = models.DateField(blank=True)
     prerequisites = models.ManyToManyField("self", symmetrical=False, blank=True)
     modules = models.ManyToManyField("modules.Module", through="CourseModule", blank=True, related_name="courses")
-    students = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="courses")
+    students = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name="courses", limit_choices_to=Q(role__name="Student")
+    )
     tags = models.ManyToManyField("Tag", blank=True, related_name="courses")
     is_template = models.BooleanField(default=False)
     is_public = models.BooleanField(default=False)

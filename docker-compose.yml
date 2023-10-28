@@ -13,7 +13,8 @@ services:
     env_file:
       - .env
     volumes:
-    - postgres_data:/var/lib/postgresql/data
+    - lms_data:/var/lib/postgresql/data
 
 volumes:
-  postgres_data:
+  lms_data:
+    name: dcc-lms

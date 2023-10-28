@@ -1,0 +1,26 @@
+[
+	{
+		"model": "users.Role",
+		"fields": {
+			"name": "Admin"
+		}
+	},
+	{
+		"model": "users.Role",
+		"fields": {
+			"name": "Instructor"
+		}
+	},
+	{
+		"model": "users.Role",
+		"fields": {
+			"name": "Admissions"
+		}
+	},
+	{
+		"model": "users.Role",
+		"fields": {
+			"name": "Student"
+		}
+	}
+]

@@ -42,6 +42,7 @@ class LabTask(models.Model):
     resources = models.TextField(default="", blank=True)
     language = models.CharField(max_length=255)
     required = models.BooleanField(default=True)
+    points = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
         return f"{self.lab.title}, Task {self.order}"

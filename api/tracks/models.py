@@ -15,6 +15,7 @@ class TrackCourse(models.Model):
     track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name="track_courses")
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=None, blank=True)
+    follows_drip = models.BooleanField(default=True)  # course unlocked if False
 
     def save(self, *args, **kwargs) -> None:
         if self.pk is None:

@@ -1,19 +1,15 @@
 from datetime import timedelta, date
-from courses.models import CourseModule, CourseModuleDrip
-from tracks.models import TrackCourse, TrackCourseDrip
-
-# from cohorts.models import Cohort
+from courses.models import CourseModuleDrip
+from tracks.models import TrackCourseDrip
 
 
-def get_next_drip(date: date, module_days_needed, total_days):
-    days_added = 0
+def get_next_drip(date: date, module_days_needed, total_days, days_per_week):
     total_days += module_days_needed
 
     while total_days >= 1:
         date += timedelta(days=1)
 
-        if date.weekday() not in [5, 6]:
-            days_added += 1
+        if days_per_week == 7 or date.weekday() not in [5, 6]:
             total_days -= 1
 
     return date, total_days
@@ -41,4 +37,4 @@ def calculate_drip_schedule(cohort):
 
             module_hours = course_module.module.course_hours
             module_days_needed = (module_hours / pace.hours_per_week) * pace.days_per_week
-            next_date, total_days = get_next_drip(next_date, module_days_needed, total_days)
+            next_date, total_days = get_next_drip(next_date, module_days_needed, total_days, pace.days_per_week)

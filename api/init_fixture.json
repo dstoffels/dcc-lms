@@ -4,7 +4,7 @@
 		"fields": {
 			"name": "Admin",
 			"can_manage_content": true,
-			"can_manage_classes": true,
+			"can_manage_cohorts": true,
 			"can_manage_students": true,
 			"can_manage_admissions": true
 		}
@@ -14,7 +14,7 @@
 		"fields": {
 			"name": "Instructor",
 			"can_manage_content": false,
-			"can_manage_classes": true,
+			"can_manage_cohorts": true,
 			"can_manage_students": true,
 			"can_manage_admissions": false
 		}
@@ -24,7 +24,7 @@
 		"fields": {
 			"name": "Admissions",
 			"can_manage_content": false,
-			"can_manage_classes": false,
+			"can_manage_cohorts": false,
 			"can_manage_students": true,
 			"can_manage_admissions": true
 		}
@@ -34,7 +34,7 @@
 		"fields": {
 			"name": "Student",
 			"can_manage_content": false,
-			"can_manage_classes": false,
+			"can_manage_cohorts": false,
 			"can_manage_students": false,
 			"can_manage_admissions": false
 		}

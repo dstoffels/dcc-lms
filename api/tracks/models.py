@@ -30,6 +30,7 @@ class TrackCourse(models.Model):
 
     class Meta:
         ordering = ["order"]
+        unique_together = ["track", "course"]
 
 
 class TrackCourseDrip(models.Model):

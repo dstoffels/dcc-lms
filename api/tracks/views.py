@@ -1,6 +1,7 @@
 from CORE import views
 from .models import Track, TrackCourse
 from .serializers import TrackSerializer, TrackCourseSerializer
+from django.shortcuts import get_object_or_404
 
 
 class TrackLCView(views.LCView):
@@ -15,7 +16,6 @@ class TrackRUDView(views.RUDView):
 
 
 class TrackCourseLCView(views.LCView):
-    queryset = TrackCourse.objects.all()
     serializer_class = TrackCourseSerializer
 
     def get_queryset(self):
@@ -23,8 +23,7 @@ class TrackCourseLCView(views.LCView):
 
 
 class TrackCourseRUDView(views.RUDView):
-    queryset = TrackCourse.objects.all()
     serializer_class = TrackCourseSerializer
 
     def get_object(self):
-        return TrackCourse.objects.get(track__id=self.kwargs["track_id"], course__id=self.kwargs["course_id"])
+        return get_object_or_404(TrackCourse, id=self.kwargs.get("trackcourse_id"))

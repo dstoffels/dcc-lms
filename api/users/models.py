@@ -38,9 +38,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Role(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    can_manage_content = models.BooleanField(default=False)  # Tracks, Courses, Modules, Units
-    can_manage_classes = models.BooleanField(default=False)  # Classes/Cohorts
-    can_manage_students = models.BooleanField(default=False)  # Student enrollment, grades
+    can_manage_content = models.BooleanField(
+        default=False
+    )  # CUD perms for Users, Cohorts, Tracks, Courses, Modules, Units; Content Creation
+    can_manage_cohorts = models.BooleanField(default=False)  # Update perms for Cohorts, Drips
+    can_manage_students = models.BooleanField(default=False)  # Read perms for
     can_manage_admissions = models.BooleanField(default=False)  # Student payments, contact info
 
     def __str__(self) -> str:

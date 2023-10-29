@@ -24,6 +24,7 @@ class Course(models.Model):
     is_template = models.BooleanField(default=False)
     is_published = models.BooleanField(default=False)
     is_archived = models.BooleanField(default=False)
+    can_self_enroll = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.code}: {self.name}"
@@ -51,6 +52,7 @@ class CourseModule(models.Model):
 
     class Meta:
         ordering = ["order"]
+        unique_together = ["course", "module"]
 
 
 class CourseModuleDrip(models.Model):

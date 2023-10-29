@@ -4,11 +4,13 @@ from .models import Track, TrackCourse
 
 
 class TrackCourseSerializer(serializers.ModelSerializer):
-    course = CourseSerializer()
+    course = CourseSerializer(read_only=True)
+    course_id = serializers.IntegerField(write_only=True)
+    track_id = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = TrackCourse
-        fields = ["id", "track", "course", "order", "follows_drip"]
+        fields = ["id", "track_id", "course_id", "course", "order", "follows_drip"]
 
 
 class TrackSerializer(serializers.ModelSerializer):

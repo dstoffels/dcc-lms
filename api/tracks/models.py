@@ -5,14 +5,13 @@ from courses.models import Course
 class Track(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    courses = models.ManyToManyField(Course, through="TrackCourse", related_name="tracks")
 
     def __str__(self):
         return self.name
 
 
 class TrackCourse(models.Model):
-    track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name="track_courses")
+    track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name="courses")
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=None, blank=True)
     follows_drip = models.BooleanField(default=True)  # course unlocked if False
@@ -27,7 +26,7 @@ class TrackCourse(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.track.name}: {self.course.title}"
+        return f"{self.track.name}: {self.course.name}"
 
     class Meta:
         ordering = ["order"]

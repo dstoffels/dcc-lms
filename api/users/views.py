@@ -10,11 +10,6 @@ from rest_framework.response import Response
 
 
 class LoginView(TokenObtainPairView):
-    """CustomTokenObtainPairView overrides the default TokenObtainPairView to add cookie
-    handling for access and refresh tokens. The post method is overridden to set the
-    access and refresh tokens as cookies in the response if token=true is passed.
-    The response data is also cleared if token=false."""
-
     permission_classes = (AllowAny,)
 
     def post(self, request, *args, **kwargs):

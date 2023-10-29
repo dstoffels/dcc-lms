@@ -15,11 +15,10 @@ from modules.models import Module
 
 class Course(models.Model):
     code = models.CharField(max_length=150)
-    title = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     description = models.TextField(blank=True, default="")
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     prerequisites = models.ManyToManyField("self", symmetrical=False, blank=True)
-    modules = models.ManyToManyField(Module, through="CourseModule", blank=True, related_name="courses")
     tags = models.ManyToManyField(Tag, blank=True, related_name="courses")
     is_public = models.BooleanField(default=False)
     is_template = models.BooleanField(default=False)
@@ -27,11 +26,11 @@ class Course(models.Model):
     is_archived = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.code}: {self.title}"
+        return f"{self.code}: {self.name}"
 
 
 class CourseModule(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="course_modules")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="modules")
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     order = models.PositiveIntegerField(default=None, blank=True)
     follows_drip = models.BooleanField(default=True)  # module unlocked if False
@@ -48,7 +47,7 @@ class CourseModule(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.course.title}: {self.module}"
+        return f"{self.course.name}: {self.module}"
 
     class Meta:
         ordering = ["order"]

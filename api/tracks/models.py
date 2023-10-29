@@ -1,15 +1,39 @@
 from django.db import models
+from courses.models import Course
 
 
 class Track(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    courses = models.ManyToManyField("courses.Course", blank=True, related_name="tracks")
-    created_at = models.DateTimeField(auto_now_add=True)
-    last_updated = models.DateTimeField(auto_now=True)
+    courses = models.ManyToManyField(Course, through="TrackCourse", related_name="tracks")
 
     def __str__(self):
         return self.name
 
+
+class TrackCourse(models.Model):
+    track = models.ForeignKey(Track, on_delete=models.CASCADE, related_name="track_courses")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    order = models.PositiveIntegerField(default=None, blank=True)
+
+    def save(self, *args, **kwargs) -> None:
+        if self.pk is None:
+            self.order = TrackCourse.objects.filter(track=self.track).count() + 1
+        else:
+            original = TrackCourse.objects.get(pk=self.pk)
+            TrackCourse.objects.filter(track=self.track, order=self.order).update(order=original.order)
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.track.name}: {self.course.title}"
+
     class Meta:
-        ordering = ["last_updated"]
+        ordering = ["order"]
+
+
+class TrackCourseDrip(models.Model):
+    cohort = models.ForeignKey("cohorts.Cohort", on_delete=models.CASCADE)
+    track_course = models.ForeignKey(TrackCourse, on_delete=models.CASCADE, related_name="start_date")
+    date = models.DateField(blank=True, null=True)
+    override = models.BooleanField(default=False)

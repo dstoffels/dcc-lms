@@ -6,8 +6,6 @@ from django.contrib.auth.models import PermissionsMixin
 
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
-        if not email:
-            raise ValueError("The Email field must be set")
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
@@ -39,7 +37,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Role(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=255, unique=True)
+    can_manage_content = models.BooleanField(default=False)  # Tracks, Courses, Modules, Units
+    can_manage_classes = models.BooleanField(default=False)  # Classes/Cohorts
+    can_manage_students = models.BooleanField(default=False)  # Student enrollment, grades
+    can_manage_admissions = models.BooleanField(default=False)  # Student payments, contact info
 
     def __str__(self) -> str:
         return self.name

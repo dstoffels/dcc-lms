@@ -3,32 +3,55 @@ from django.conf import settings
 from django.db.models import Q
 
 
-class Course(models.Model):
-    title = models.CharField(max_length=255, unique=True)
-    code = models.CharField(max_length=150, unique=True)
-    description = models.TextField(blank=True, default="")
-    # image = models.ImageField()
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
-    start_date = models.DateField(blank=True)
-    end_date = models.DateField(blank=True)
-    prerequisites = models.ManyToManyField("self", symmetrical=False, blank=True)
-    modules = models.ManyToManyField("modules.Module", through="CourseModule", blank=True, related_name="courses")
-    students = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, blank=True, related_name="courses", limit_choices_to=Q(role__name="Student")
-    )
-    tags = models.ManyToManyField("Tag", blank=True, related_name="courses")
-    is_template = models.BooleanField(default=False)
-    is_public = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.title
-
-
 class Tag(models.Model):
     name = models.CharField(max_length=55)
 
+    def __str__(self) -> str:
+        return self.name
+
+
+from modules.models import Module
+
+
+class Course(models.Model):
+    code = models.CharField(max_length=150)
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, default="")
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    prerequisites = models.ManyToManyField("self", symmetrical=False, blank=True)
+    modules = models.ManyToManyField(Module, through="CourseModule", blank=True, related_name="courses")
+    tags = models.ManyToManyField(Tag, blank=True, related_name="courses")
+    is_template = models.BooleanField(default=False)
+    is_public = models.BooleanField(default=False)
+    is_archived = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.code}: {self.title}"
+
 
 class CourseModule(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    module = models.ForeignKey("modules.Module", on_delete=models.CASCADE)
-    order = models.PositiveIntegerField()
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="course_modules")
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    order = models.PositiveIntegerField(default=None, blank=True)
+
+    def save(self, *args, **kwargs) -> None:
+        if self.pk is None:
+            self.order = CourseModule.objects.filter(course=self.course).count() + 1
+        else:
+            original = CourseModule.objects.get(pk=self.pk)
+            CourseModule.objects.filter(course=self.course, order=self.order).update(order=original.order)
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.course.title}: {self.module}"
+
+    class Meta:
+        ordering = ["order"]
+
+
+class CourseModuleDrip(models.Model):
+    cohort = models.ForeignKey("cohorts.Cohort", on_delete=models.CASCADE)
+    course_module = models.ForeignKey(CourseModule, on_delete=models.CASCADE, related_name="drips")
+    date = models.DateField(blank=True, null=True)
+    override = models.BooleanField(default=False)

@@ -8,7 +8,7 @@ const env = fs
 	.split('\n')
 	.reduce((acc, line) => {
 		const [key, value] = line.split('=');
-		if (key) {
+		if (key && !key.startsWith('#')) {
 			acc[key] = value;
 		}
 		return acc;

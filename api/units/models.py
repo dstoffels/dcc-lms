@@ -4,35 +4,47 @@ from django.conf import settings
 
 class Unit(models.Model):
     module = models.ForeignKey("modules.Module", on_delete=models.SET_NULL, related_name="units", null=True, blank=True)
-    title = models.CharField(max_length=255)
-    description = models.CharField(max_length=255, default="", blank=True)
-    order = models.PositiveIntegerField()
-    course_hours = models.FloatField(default=0)
+    name = models.CharField(max_length=255)
+    order = models.PositiveIntegerField(blank=True)
+
+    def save(self, *args, **kwargs) -> None:
+        count = Unit.objects.filter(module=self.module).count()
+        if self.pk is None:
+            self.order = count + 1
+        else:
+            original = Unit.objects.get(pk=self.pk)
+            if self.order > count:
+                self.order = count
+            Unit.objects.filter(module=self.module, order=self.order).update(order=original.order)
+        super().save(*args, **kwargs)
+
+    UNIT_TYPE_CHOICES = [
+        ("external_url", "External URL"),
+        ("lab", "Lab"),
+        ("assignment", "Assignment"),
+    ]
+
+    type = models.CharField(max_length=50, choices=UNIT_TYPE_CHOICES, default="external_url")
 
     class Meta:
         ordering = ["order"]
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
-# class Assessment(Unit):
-#     total_marks = models.PositiveIntegerField()
-#     passing_marks = models.PositiveIntegerField()
+class UnitType(models.Model):
+    unit = models.OneToOneField(Unit, on_delete=models.CASCADE, primary_key=True)
 
 
-# class Assignment(Unit):
-#     due_date = models.DateTimeField()
-# url = models.CharField(max_length=255)
-
-
-class ExternalURL(Unit):
+class ExternalURL(UnitType):
     url = models.URLField()
     load_in_new_tab = models.BooleanField(default=False)
 
 
-class Lab(Unit):
+class Lab(UnitType):
     due_date = models.DateField(null=True, blank=True)
+    points = models.PositiveIntegerField(default=0)
 
 
 class LabTask(models.Model):
@@ -42,10 +54,9 @@ class LabTask(models.Model):
     resources = models.TextField(default="", blank=True)
     language = models.CharField(max_length=255)
     required = models.BooleanField(default=True)
-    points = models.PositiveIntegerField(default=0)
 
     def __str__(self) -> str:
-        return f"{self.lab.title}, Task {self.order}"
+        return f"{self.lab.name}, Task {self.order}"
 
 
 class CompletedLabTask(models.Model):

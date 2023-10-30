@@ -3,9 +3,10 @@ from django.conf import settings
 
 
 class Unit(models.Model):
-    module = models.ForeignKey("modules.Module", on_delete=models.SET_NULL, related_name="units", null=True, blank=True)
+    module = models.ForeignKey("modules.Module", on_delete=models.CASCADE, related_name="units", blank=True)
     name = models.CharField(max_length=255)
     order = models.PositiveIntegerField(blank=True)
+    follows_drip = models.BooleanField(default=True)
 
     def save(self, *args, **kwargs) -> None:
         count = Unit.objects.filter(module=self.module).count()
@@ -35,6 +36,9 @@ class Unit(models.Model):
 
 class UnitType(models.Model):
     unit = models.OneToOneField(Unit, on_delete=models.CASCADE, primary_key=True)
+
+    def __str__(self) -> str:
+        return f" {self.unit.name}"
 
 
 class ExternalURL(UnitType):

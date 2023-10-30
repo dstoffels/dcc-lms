@@ -1,9 +1,11 @@
-from django.shortcuts import render
+from CORE import views
+from .models import Unit
 from rest_framework import generics
 from .models import Lab, LabTask
 from .serializers import LabSerializer
 from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
+from .serializers import UnitSerializer
 import os
 import openai
 import json
@@ -42,3 +44,20 @@ class TaskSubmitView(generics.GenericAPIView):
         response = json.loads(completion.choices[0].message.content)
 
         return Response(response)
+
+
+class UnitLCView(views.LCView):
+    queryset = Unit.objects.all()
+    Model = Unit
+    parent_kwarg = "module_id"
+    serializer_class = UnitSerializer
+
+
+class UnitRUDView(views.RUDView):
+    queryset = Unit.objects.all()
+    serializer_class = UnitSerializer
+
+
+class UnitTypesView(generics.ListAPIView):
+    def get(self, request, *args, **kwargs):
+        return Response({"unit_types": [{"value": type[0], "text": type[1]} for type in Unit.UNIT_TYPE_CHOICES]})

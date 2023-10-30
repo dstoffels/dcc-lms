@@ -7,4 +7,5 @@ urlpatterns = [
     path("tracks", include("tracks.urls")),
     path("courses", include("courses.urls")),
     path("modules", include("modules.urls")),
+    path("units", include("units.urls")),
 ]

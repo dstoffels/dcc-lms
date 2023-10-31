@@ -29,6 +29,7 @@ class LabTaskAttemptSerializer(BaseSerializer):
             "id",
             "code",
             "is_complete",
-            "assistant_msgs",
+            "messages",
+            "hints",
             "task",
         )

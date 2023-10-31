@@ -59,24 +59,24 @@ class LabTaskAttemptRUDView(views.RUDView):
 
 import requests
 
+url = "https://api.openai.com/v1/chat/completions"
+api_key = os.getenv("OPENAI_API_KEY")
+headers = {
+    "Authorization": f"Bearer {api_key}",
+}
 
-class LabTaskCompleteView(generics.GenericAPIView):
+
+class CompleteAttemptView(generics.GenericAPIView):
     def post(self, request, lab_id, attempt_id):
         code = request.data.get("code")
+        if not code:
+            return Response({"code": "Cannot be empty"}, 400)
+
         attempt: LabTaskAttempt = get_object_or_404(LabTaskAttempt, id=attempt_id)
         attempt.code = code
         attempt.save()
 
-        if not code:
-            return Response({"code": "Cannot be empty"}, 400)
-
-        api_key = os.getenv("OPENAI_API_KEY")
-        url = "https://api.openai.com/v1/chat/completions"
-        headers = {
-            "Authorization": f"Bearer {api_key}",
-        }
-
-        payload = {
+        request_body = {
             "model": "gpt-3.5-turbo",
             "messages": [
                 {
@@ -85,7 +85,7 @@ class LabTaskCompleteView(generics.GenericAPIView):
                 },
                 {
                     "role": "user",
-                    "content": f"lang: {attempt.task.language} Task: {attempt.task.description} Code: {code}",
+                    "content": f"LANG: {attempt.task.language} TASK: {attempt.task.description} CODE: {code}",
                 },
             ],
             "temperature": 0,
@@ -96,7 +96,7 @@ class LabTaskCompleteView(generics.GenericAPIView):
 
         while response is None:
             try:
-                response = requests.post(url, json=payload, headers=headers, timeout=3).json()
+                response = requests.post(url, json=request_body, headers=headers, timeout=3).json()
             except requests.exceptions.Timeout:
                 pass
 
@@ -105,5 +105,71 @@ class LabTaskCompleteView(generics.GenericAPIView):
         if completed == "y":
             attempt.is_complete = True
             attempt.save()
+
+        return Response(LabTaskAttemptSerializer(attempt).data)
+
+
+class TaskAssistantView(generics.GenericAPIView):
+    """Captures hints from openai to guide student. Could be setup to ping slack after 3-5 ai assists. Could be setup to nerf spamming with a 2-5min cooldown between requests"""
+
+    def get(self, request, lab_id, attempt_id):
+        # code = request.data.get("code")
+        # if not code:
+        #     return Response({"code": "Cannot be empty"}, 400)
+
+        attempt: LabTaskAttempt = get_object_or_404(LabTaskAttempt, id=attempt_id)
+        is_first_request = len(attempt.messages) is 0
+        max_tokens = 50
+
+        prompt = {
+            "role": "user",
+            "content": f"LANG: {attempt.task.language}\nTASK: {attempt.task.description}\nPlease provide a single, specific hint that guides me toward the TASK.\n\nCODE:\n{attempt.code}\n",
+        }
+        if is_first_request:
+            attempt.messages = [
+                {
+                    "role": "system",
+                    "content": f"Your role is to evaluate the user's most recent code against the task they are trying to accomplish. Provide a single, specific hint that guides the user towards the next immediate step they should take to meet the task requirements. Your hint must not exceed 50 tokens, should not give away the answer, and should not include unnecessary text.",
+                },
+                prompt,
+            ]
+        elif not attempt.is_complete:
+            attempt.messages = [
+                *attempt.messages,
+                {
+                    "role": "system",
+                    "content": f"Remember, your hint must be less than {max_tokens} tokens, must be a singular hint and should not provide the answer. It should guide the user towards finding the solution themselves.",
+                },
+                prompt,
+            ]
+        elif attempt.is_complete:
+            attempt.messages = [
+                *attempt.messages,
+                {
+                    "role": "user",
+                    "content": f"Please sniff my code to help guide me toward best practices in {max_tokens} tokens or fewer\n\n{attempt.code}",
+                },
+            ]
+
+        request_body = {
+            "model": "gpt-3.5-turbo",
+            "messages": attempt.messages,
+            "temperature": 0,
+            "max_tokens": max_tokens,
+        }
+
+        response = None
+
+        while response is None:
+            try:
+                response = requests.post(url, json=request_body, headers=headers, timeout=10).json()
+            except requests.exceptions.Timeout:
+                pass
+
+        hint_msg = response.get("choices")[0].get("message")
+
+        attempt.messages = [*attempt.messages, hint_msg]
+        attempt.hints = [*attempt.hints, hint_msg.get("content")]
+        attempt.save()
 
         return Response(LabTaskAttemptSerializer(attempt).data)

@@ -41,7 +41,8 @@ class LabTaskAttempt(models.Model):
     task = models.ForeignKey(LabTask, on_delete=models.CASCADE)
     student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="lab_task_attempts")
     code = models.TextField(blank=True)
-    assistant_msgs = models.JSONField(default=list, blank=True)
+    messages = models.JSONField(default=list, blank=True)
+    hints = models.JSONField(default=list, blank=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
     is_complete = models.BooleanField(default=False)
 

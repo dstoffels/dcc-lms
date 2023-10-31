@@ -1,5 +1,4 @@
 from django.db import models
-from django.conf import settings
 
 
 class Unit(models.Model):
@@ -25,7 +24,7 @@ class Unit(models.Model):
         ("assignment", "Assignment"),
     ]
 
-    type = models.CharField(max_length=50, choices=UNIT_TYPE_CHOICES, default="external_url")
+    type = models.CharField(max_length=50, choices=UNIT_TYPE_CHOICES)
 
     class Meta:
         ordering = ["order"]
@@ -44,26 +43,3 @@ class UnitType(models.Model):
 class ExternalURL(UnitType):
     url = models.URLField()
     load_in_new_tab = models.BooleanField(default=False)
-
-
-class Lab(UnitType):
-    due_date = models.DateField(null=True, blank=True)
-    points = models.PositiveIntegerField(default=0)
-
-
-class LabTask(models.Model):
-    lab = models.ForeignKey(Lab, on_delete=models.CASCADE, related_name="tasks")
-    order = models.PositiveIntegerField()
-    description = models.TextField()
-    resources = models.TextField(default="", blank=True)
-    language = models.CharField(max_length=255)
-    required = models.BooleanField(default=True)
-
-    def __str__(self) -> str:
-        return f"{self.lab.name}, Task {self.order}"
-
-
-class CompletedLabTask(models.Model):
-    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    task = models.ForeignKey(LabTask, on_delete=models.CASCADE)
-    completed_at = models.DateTimeField(auto_now_add=True)

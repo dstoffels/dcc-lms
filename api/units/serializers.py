@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from CORE.serializers import BaseSerializer
-from .models import Unit, Lab, LabTask, ExternalURL
+from .models import Unit, ExternalURL
+from labs.serializers import Lab, LabSerializer
 
 
 class ExternalURLSerializer(BaseSerializer):
@@ -9,18 +10,13 @@ class ExternalURLSerializer(BaseSerializer):
         fields = "url", "load_in_new_tab"
 
 
-class LabSerializer(BaseSerializer):
-    class Meta:
-        model = Lab
-        fields = "due_date", "points"
-
-
 class UnitSerializer(BaseSerializer):
     data = serializers.DictField(write_only=True)
+    module_id = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Unit
-        fields = "id", "name", "order", "type", "data"
+        fields = "id", "module_id", "name", "order", "type", "data"
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
@@ -28,7 +24,8 @@ class UnitSerializer(BaseSerializer):
             eu = ExternalURL.objects.get(unit=instance)
             representation["data"] = ExternalURLSerializer(eu).data
         elif instance.type == "lab":
-            representation["data"] = representation.pop("lab")
+            lab = Lab.objects.get(unit=instance)
+            representation["data"] = LabSerializer(lab).data
         return representation
 
     def validate(self, data):
@@ -42,11 +39,12 @@ class UnitSerializer(BaseSerializer):
         elif unit_type == "lab":
             serializer = LabSerializer(data=type_data)
             serializer.is_valid()
+            validated_data["data"] = serializer.data
 
         return validated_data
 
     def create(self, validated_data):
-        unit_type = validated_data.pop("type")
+        unit_type = validated_data.get("type")
         type_data = validated_data.pop("data", {})
 
         unit = super().create(validated_data)
@@ -57,8 +55,10 @@ class UnitSerializer(BaseSerializer):
             Lab.objects.create(**type_data, unit=unit)
         return unit
 
+    def update(self, instance, validated_data):
+        type_data = validated_data.pop("data", {})
 
-class LabTaskSerializer(BaseSerializer):
-    class Meta:
-        model = LabTask
-        fields = "__all__"
+        unit = super().update(instance, validated_data)
+
+        if unit.type == "external_url":
+            srlzr = ExternalURLSerializer()

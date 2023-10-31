@@ -1,7 +1,8 @@
 const app = require('express')();
 const bodyParser = require('body-parser');
 const streamToPromise = require('stream-to-promise');
-const docker = require('dockerode')({ socketPath: '/var/run/docker.sock' });
+const docker = require('dockerode')(); // dev
+// const docker = require('dockerode')({ socketPath: '/var/run/docker.sock' }); // prod
 const { getCmd } = require('./utils');
 const logger = require('./logger');
 
@@ -24,7 +25,7 @@ app.post('/run', async (req, res) => {
 
 		const output = await streamToPromise(stream);
 
-		await container.remove();
+		container.remove();
 
 		res.json({ output: output.toString() });
 	} catch (err) {

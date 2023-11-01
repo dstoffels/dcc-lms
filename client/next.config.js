@@ -16,6 +16,9 @@ const env = fs
 
 const nextConfig = {
 	env,
+	experimental: {
+		serverActions: true,
+	},
 };
 
 module.exports = nextConfig;

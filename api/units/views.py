@@ -3,6 +3,7 @@ from .models import Unit
 from rest_framework import generics
 from rest_framework.response import Response
 from .serializers import UnitSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 class UnitLCView(views.LCView):
@@ -13,6 +14,7 @@ class UnitLCView(views.LCView):
 
 
 class UnitRUDView(views.RUDView):
+    permission_classes = (IsAuthenticated,)
     queryset = Unit.objects.all()
     serializer_class = UnitSerializer
 

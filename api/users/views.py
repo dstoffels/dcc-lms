@@ -4,7 +4,7 @@ from rest_framework import generics, status
 from django.contrib.auth import get_user_model
 from .cookies import set_cookies, set_new_cookies
 from .serializers import UserSerializer
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from .models import Role
 from rest_framework.response import Response
 
@@ -52,3 +52,10 @@ class RolesView(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         roles = [{"id": role.id, "name": role.name} for role in self.queryset.all()]
         return Response(roles, 200)
+
+
+class UserView(generics.RetrieveAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        return Response(UserSerializer(request.user).data)

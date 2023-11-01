@@ -30,6 +30,6 @@ class LabTaskAttemptSerializer(BaseSerializer):
             "code",
             "is_complete",
             "messages",
-            "hints",
+            "hint",
             "task",
         )

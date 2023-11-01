@@ -9,10 +9,16 @@ def set_cookies(request: Request, response: Response):
     refresh_lifetime = settings.SIMPLE_JWT["SLIDING_TOKEN_REFRESH_LIFETIME"].total_seconds()
 
     response.set_cookie(
-        "access_token", response.data["access"], httponly=True, max_age=access_lifetime, secure=settings.HTTPS_ONLY
+        "access_token",
+        response.data["access"],
+        httponly=True,
+        max_age=access_lifetime,
     )
     response.set_cookie(
-        "refresh_token", response.data["refresh"], httponly=True, max_age=refresh_lifetime, secure=settings.HTTPS_ONLY
+        "refresh_token",
+        response.data["refresh"],
+        httponly=True,
+        max_age=refresh_lifetime,
     )
 
     use_jwt_in_response = request.GET.get("token", "false").lower() == "true"

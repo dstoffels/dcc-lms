@@ -1,5 +1,6 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, FormEvent } from 'react';
 import Editor from '@monaco-editor/react';
 import useEmmet from '../../hooks/useEmmet';
 import judgeAPI from '../../utils/judgeAPI';
@@ -9,14 +10,15 @@ import LanguageSelector from '../LanguageSelector/LanguageSelector';
 import Shortcuts from '../Shortcuts/Shortcuts';
 import Terminal, { ResultObj } from '../Terminal/Terminal';
 import axios from 'axios';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 const IDE = ({
-	defaultValue = '',
+	value = '',
+	onChange,
 	initLanguage = 'javascript',
-	showLanguageSelect = true,
+	showLanguageSelect,
+	onRun,
 }: IDE_Props) => {
-	const [source_code, setSourceCode] = useState<string | undefined>(defaultValue);
 	const [results, setResults] = useState<ResultObj | any>(null);
 	const [language, setLanguage] = useState(initLanguage);
 
@@ -24,44 +26,42 @@ const IDE = ({
 		useEmmet();
 	}, []);
 
-	const runCode = async () => {
-		try {
-			const response = await axios.post('http://127.0.0.1:8000/units/labs/1/tasks/2/submit', {
-				code: source_code,
-			});
-			setResults(response.data);
-		} catch (error) {
-			console.warn(error);
-		}
+	const handleRun = () => {
+		onRun(value, language);
 	};
 
 	return (
-		<div>
-			<Shortcuts onEnter={runCode} onSave={() => console.log('File Saved ;)')} />
-			<div className="flex items-center justify-between gap-5 p-2">
+		<Box display="flex" flexDirection="column" height="100%" overflow="auto">
+			<Shortcuts onEnter={handleRun} onSave={() => console.log('File Saved ;)')} />
+			<div className="flex items-center justify-between gap-5 p-1">
 				<div>
 					{showLanguageSelect && <LanguageSelector value={language} onChange={setLanguage} />}
 				</div>
-				<Button onClick={runCode} disabled={!source_code}>
+				<Button onClick={handleRun} disabled={!value}>
 					Run Code
 				</Button>
 			</div>
-			<Editor
-				height="50vh"
-				value={source_code}
-				onChange={(value) => setSourceCode(value)}
-				theme="vs-dark"
-				language={language}
-			/>
-			<Terminal results={results} />
-		</div>
+			<Box flex={1}>
+				<Editor
+					height="100%"
+					value={value}
+					onChange={onChange}
+					theme="vs-dark"
+					language={language}
+				/>
+			</Box>
+			{/* <Terminal results={results} /> */}
+		</Box>
 	);
 };
 
 export default IDE;
 
 interface IDE_Props {
-	defaultValue?: string;
-	initLanguage?: ValidLanguages[number];
+	value: string | undefined;
+	onChange: (code: string | undefined) => void;
+	initLanguage?: string;
 	expected_output?: string;
+	showLanguageSelect?: boolean;
+	onRun: (code: string | undefined, language: string) => any;
 }

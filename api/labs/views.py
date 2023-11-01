@@ -51,7 +51,7 @@ class LabTaskAttemptLCView(views.LCView):
 
 class LabTaskAttemptRUDView(views.RUDView):
     queryset = LabTaskAttempt.objects.all()
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
     serializer_class = LabTaskAttemptSerializer
     lookup_url_kwarg = "attempt_id"
     lookup_field = "id"
@@ -74,6 +74,7 @@ class CompleteAttemptView(generics.GenericAPIView):
 
         attempt: LabTaskAttempt = get_object_or_404(LabTaskAttempt, id=attempt_id)
         attempt.code = code
+        attempt.hint = ""
         attempt.save()
 
         request_body = {
@@ -104,6 +105,11 @@ class CompleteAttemptView(generics.GenericAPIView):
 
         if completed == "y":
             attempt.is_complete = True
+            attempt.hint = "Task complete!\nGreat work!"
+            attempt.save()
+        else:
+            attempt.is_complete = False
+            attempt.hint = "Double-check your code, review your resources or click get help below!"
             attempt.save()
 
         return Response(LabTaskAttemptSerializer(attempt).data)
@@ -169,7 +175,7 @@ class TaskAssistantView(generics.GenericAPIView):
         hint_msg = response.get("choices")[0].get("message")
 
         attempt.messages = [*attempt.messages, hint_msg]
-        attempt.hints = [*attempt.hints, hint_msg.get("content")]
+        attempt.hint = hint_msg.get("content")
         attempt.save()
 
         return Response(LabTaskAttemptSerializer(attempt).data)

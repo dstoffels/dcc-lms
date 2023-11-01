@@ -1,14 +1,17 @@
-from .models import User
+from .models import User, Role
 from CORE.serializers import BaseSerializer
 from rest_framework import serializers
 
 
+class RoleSerialier(BaseSerializer):
+    class Meta:
+        model = Role
+        fields = "__all__"
+
+
 class UserSerializer(BaseSerializer):
     password = serializers.CharField(write_only=True)
-    role = serializers.SerializerMethodField()
-
-    def get_role(self, user: User):
-        return user.role.name
+    role = RoleSerialier(read_only=True)
 
     class Meta:
         model = User

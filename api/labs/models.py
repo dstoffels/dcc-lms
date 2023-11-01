@@ -21,6 +21,7 @@ class LabTask(models.Model):
     resources = models.TextField(default="", blank=True)
     language = models.CharField(max_length=255, choices=LANGUAGE_CHOICES)
     required = models.BooleanField(default=True)  # remove me??
+    use_previous_code = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs) -> None:
         count = LabTask.objects.filter(lab=self.lab).count()

@@ -6,6 +6,7 @@ services:
     ports:
       - 4200:4200
     privileged: true
+    restart: always
   db:
     image: postgres
     ports:
@@ -14,6 +15,7 @@ services:
       - .env
     volumes:
     - lms_data:/var/lib/postgresql/data
+    restart: always
 
 volumes:
   lms_data:

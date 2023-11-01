@@ -62,8 +62,9 @@ const LabAttemptContent = ({ attempt }: LabAttemptContentProps) => {
 						<Box flex={1}>{attempt.task.description}</Box>
 						<Button
 							onClick={handleComplete}
-							color="error"
+							color={attempt.is_complete ? 'primary' : 'error'}
 							disabled={attempt.code === code || !code}
+							variant="contained"
 						>
 							{attempt.is_complete ? 'Task Complete!' : 'Check Task'}
 						</Button>
@@ -93,7 +94,7 @@ const LabAttemptContent = ({ attempt }: LabAttemptContentProps) => {
 					<Typography variant="overline" marginBottom={1} borderBottom="1px gray solid">
 						Output
 					</Typography>
-					<Box>
+					<Box flex={1}>
 						<iframe width="100%" height="100%" srcDoc={output}></iframe>
 					</Box>
 				</Stack>

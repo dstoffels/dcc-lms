@@ -1,0 +1,1190 @@
+{
+	"info": {
+		"_postman_id": "617cd7bc-186f-42f2-9250-ec4f4cdc9535",
+		"name": "dcc-lms",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19591953"
+	},
+	"item": [
+		{
+			"name": "AUTH",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"dan.stoffels@gmail.com\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/auth/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"danostoffels@gmail.com\",\r\n    \"username\": \"F\",\r\n    \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.01:8000/auth/register?token=true",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"auth",
+								"register"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5ODM2Nzc1MywiaWF0IjoxNjk4MjgxMzUzLCJqdGkiOiI5OTg3YmMwZTBjMWU0ZDZjOTA1MWE2NjI3NTcxNzZiNSIsInVzZXJfaWQiOjF9.mvayJlJtC2y1sskRclJjtqa90H62spUNROcR6hSTohE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.01:8000/auth/refresh",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Roles",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"refresh\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5ODM2Nzc1MywiaWF0IjoxNjk4MjgxMzUzLCJqdGkiOiI5OTg3YmMwZTBjMWU0ZDZjOTA1MWE2NjI3NTcxNzZiNSIsInVzZXJfaWQiOjF9.mvayJlJtC2y1sskRclJjtqa90H62spUNROcR6hSTohE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.01:8000/auth/roles",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"01"
+							],
+							"port": "8000",
+							"path": [
+								"auth",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tracks",
+			"item": [
+				{
+					"name": "List Tracks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tracks",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tracks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Track",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Web Dev\",\r\n    \"description\": \"This is a new track\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/tracks",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tracks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Track",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tracks/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tracks",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Track",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Updated Track\",\r\n    \"description\": \"This is an updated track\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/tracks/4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tracks",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Track",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tracks/4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tracks",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Track Courses",
+			"item": [
+				{
+					"name": "List Track Courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tracks/2/courses",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tracks",
+								"2",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Track Course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"track_id\": 2,\r\n    \"course_id\": 2,\r\n    \"follows_drip\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/tracks/1/courses",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tracks",
+								"1",
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Track Course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tracks/1/courses/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tracks",
+								"1",
+								"courses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Track Course",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"track_id\": 1,\r\n    \"course_id\": 1,\r\n    \"order\": 2,\r\n    \"follows_drip\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/tracks/1/courses/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tracks",
+								"1",
+								"courses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Track Course",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tracks/2/courses/2",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tracks",
+								"2",
+								"courses",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "List Courses",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/courses",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Web Dev\",\r\n    \"code\": \"DEV 101\",\r\n    \"description\": \"Web Development 101\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/courses",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"courses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Course",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/courses/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"courses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Course",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Orientation\",\r\n    \"code\": \"DEV 100\",\r\n    \"description\": \"Intro Course\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/courses/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"courses",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Course",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/courses/3",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"courses",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Course Modules",
+			"item": [
+				{
+					"name": "List Course Modules",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/courses/1/modules",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"courses",
+								"1",
+								"modules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Course Module",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"course_id\": 1,\r\n    \"module_id\": 1,\r\n    \"follows_drip\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/courses/1/modules",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"courses",
+								"1",
+								"modules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Course Module",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/courses/1/modules/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"courses",
+								"1",
+								"modules",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Course Module",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"course_id\": 1,\r\n    \"module_id\": 1,\r\n    \"order\": 3,\r\n    \"follows_drip\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/courses/1/modules/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"courses",
+								"1",
+								"modules",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Course Module",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/courses/1/modules/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"courses",
+								"1",
+								"modules",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Modules",
+			"item": [
+				{
+					"name": "List Modules",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/modules",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"modules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Module",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Design Basics\",\r\n    \"description\": \"Design Basics\",\r\n    \"course_hours\": 0,\r\n    \"is_published\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/modules",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"modules"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Module",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/modules/4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"modules",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Module",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Design Basics\",\r\n    \"description\": \"Design Basics\",\r\n    \"course_hours\": 0,\r\n    \"is_published\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/modules/4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"modules",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Module",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/modules/4",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"modules",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Module Units",
+			"item": [
+				{
+					"name": "List Module Units",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/modules/1/units",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"modules",
+								"1",
+								"units"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Module Unit: URL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Lab: 123\",\r\n    \"type\": \"external_url\",\r\n    \"data\": {\r\n        \"url\": \"https://www.devcodecamp.com\",\r\n        \"load_in_new_tab\": false\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/modules/4/units",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"modules",
+								"4",
+								"units"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Module Unit: Lab",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Lab: 123\",\r\n    \"type\": \"lab\",\r\n    \"data\": {\r\n        \"due_date\": \"2023-10-31\",\r\n        \"points\": 50\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/modules/4/units",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"modules",
+								"4",
+								"units"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Unit",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/units/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"units",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Unit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"order\": 3,\r\n    \"follows_drip\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/units/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"units",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Unit",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/units/17",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"units",
+								"17"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Unit Types",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/units/types",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"units",
+								"types"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Labs",
+			"item": [
+				{
+					"name": "Attempts",
+					"item": [
+						{
+							"name": "Complete Lab Task Attempt",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"code\": \"let myname = \\\"dan\\\"\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/labs/1/attempts/11/complete",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"labs",
+										"1",
+										"attempts",
+										"11",
+										"complete"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Task Assistance",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"messages\": []\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/labs/1/attempts/11/assistant",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"labs",
+										"1",
+										"attempts",
+										"11",
+										"assistant"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List Student Lab Attempts",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Declare a let variable and assign it your name.\",\r\n    \"language\": \"javascript\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/labs/1/tasks/1/attempts",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"labs",
+										"1",
+										"tasks",
+										"1",
+										"attempts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Student Lab Attempts",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Declare a let variable and assign it your name.\",\r\n    \"language\": \"javascript\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/labs/1/tasks/1/attempts",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"labs",
+										"1",
+										"tasks",
+										"1",
+										"attempts"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve Attempt",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/labs/1/attempts/11",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"labs",
+										"1",
+										"attempts",
+										"11"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Attempt",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"code\": \"\",\r\n    \"assistant_msgs\": []\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/labs/1/attempts/11",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"labs",
+										"1",
+										"attempts",
+										"11"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Attempt",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"code\": \"\",\r\n    \"assistant_msgs\": []\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/labs/1/attempts/6",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"labs",
+										"1",
+										"attempts",
+										"6"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Create Lab Task",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Declare a let variable and assign it your name.\",\r\n    \"language\": \"javascript\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/labs/18/tasks",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"labs",
+								"18",
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve Lab Task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/labs/1/tasks/1",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"labs",
+								"1",
+								"tasks",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Run Code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"let myName = \\\"dan\\\";\\nconsole.log(myName);\",\r\n    \"language\": \"javascript\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4200/run",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"run"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://127.0.0.1:8000",
+			"type": "string"
+		}
+	]
+}

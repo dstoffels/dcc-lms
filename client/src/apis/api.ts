@@ -1,4 +1,4 @@
-const baseUrl = process.env.DJANGO_BASE_URL;
+const baseUrl = 'http://127.0.0.1:8000';
 import { cookies } from 'next/headers';
 
 const api = {

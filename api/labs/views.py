@@ -60,7 +60,7 @@ class LabTaskAttemptRUDView(views.RUDView):
 import requests
 
 url = "https://api.openai.com/v1/chat/completions"
-api_key = os.getenv("OPENAI_API_KEY")
+api_key = os.environ.get("OPENAI_API_KEY")
 headers = {
     "Authorization": f"Bearer {api_key}",
 }
@@ -86,7 +86,7 @@ class CompleteAttemptView(generics.GenericAPIView):
                 },
                 {
                     "role": "user",
-                    "content": f"LANG: {attempt.task.language} TASK: {attempt.task.description} CODE: {code}",
+                    "content": f"The language is: {attempt.task.language}\nMy task is: {attempt.task.description}\nMy code is: {code}\nHave I completed this task precisely?",
                 },
             ],
             "temperature": 0,

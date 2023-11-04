@@ -1,27 +1,32 @@
 import { cookies } from 'next/headers';
 import nexios from '../nexios/nexios';
-import { ResponseCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 
 const api = nexios.create({ baseURL: 'http://localhost:8000' });
 
 // auto pass cookies to client responses
 api.addMiddleware((reqConfig, response) => {
+	const cookieStore = cookies();
+
+	const Cookie = cookieStore
+		.getAll()
+		.map(({ name, value }) => `${name}=${value}`)
+		.join('; ');
+	reqConfig.headers = { ...reqConfig.headers, Cookie };
+
 	if (response) {
 		const setCookie = response?.headers.getSetCookie();
-		const cookieStore = cookies();
 		// @ts-ignore
 		setCookie.forEach((cookie) => cookieStore.set(new ResponseCookie(cookie)));
-
-		console.log(cookieStore.getAll());
 
 		return response;
 	}
 
 	return reqConfig;
 });
+
 export default api;
 
-class ResponseCookie {
+export class ResponseCookie {
 	name: string;
 	value: string;
 	httpOnly: boolean = false;
@@ -31,11 +36,13 @@ class ResponseCookie {
 	sameSite: boolean = false;
 
 	constructor(rawCookie: string) {
-		const [name, value] = rawCookie.split('=');
-		const cookie = rawCookie.split(';');
+		const cookieAttributes = rawCookie.split(';').map((attr) => attr.trim());
+
+		const [name, value] = cookieAttributes[0].split('=');
 		this.name = name;
 		this.value = value;
-		cookie.forEach((prop) => {
+
+		cookieAttributes.forEach((prop) => {
 			const [key, val] = prop.trim().split('=');
 			switch (key) {
 				case 'HttpOnly':

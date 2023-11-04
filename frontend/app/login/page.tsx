@@ -6,13 +6,14 @@ import { Box, TextField, Button, Typography } from '@mui/material';
 // import { useAuth } from '@/context/AuthContext';
 import { cookies } from 'next/headers';
 import api from 'utils/api';
+import { redirect } from 'next/navigation';
 
 class LoginFormData {
 	email = '';
 	password = '';
 }
 
-const LoginPage: React.FC = () => {
+const LoginPage = () => {
 	return (
 		<Box
 			display="flex"
@@ -67,10 +68,15 @@ export default LoginPage;
 
 export async function login(rawFormData: FormData) {
 	'use server';
+
 	const formData = {};
 
 	// @ts-ignore
 	rawFormData.forEach((value, key) => (formData[key] = value));
 
-	await api.post('/auth/login', formData, { cache: 'no-store' });
+	const response = await api.post('/auth/login', formData, { cache: 'no-store' });
+
+	if (response.ok) {
+		redirect('/');
+	}
 }

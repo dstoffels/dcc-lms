@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class UnitLCView(views.LCView):
+    permission_classes = (IsAuthenticated,)
     queryset = Unit.objects.all()
     Model = Unit
     parent_kwarg = "module_id"

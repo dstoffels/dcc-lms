@@ -26,7 +26,7 @@ class Nexios {
 		};
 	}
 
-	private async request(url: string, config: RequestConfig): Promise<any> {
+	private async request(url: string, config: RequestConfig): Promise<Response> {
 		const { params, ...restConfig } = config;
 		const queryString = params ? '?' + new URLSearchParams(params).toString() : '';
 
@@ -50,22 +50,25 @@ class Nexios {
 		if (!response.ok) {
 			throw new Error(await response.text());
 		}
-		return response.json();
+		return response;
 	}
 
-	public get(url: string, config?: RequestConfig): Promise<any> {
+	public get(url: string, config?: RequestConfig): Promise<Response> {
 		return this.request(url, { method: 'GET', ...config });
 	}
 
-	public post(url: string, data?: any, config?: RequestConfig): Promise<any> {
+	public post(url: string, data?: any, config?: RequestConfig): Promise<Response> {
 		return this.request(url, { method: 'POST', body: JSON.stringify(data), ...config });
 	}
 
-	public put(url: string, data?: any, config?: RequestConfig): Promise<any> {
+	public put(url: string, data?: any, config?: RequestConfig): Promise<Response> {
 		return this.request(url, { method: 'PUT', body: JSON.stringify(data), ...config });
 	}
+	public patch(url: string, data?: any, config?: RequestConfig): Promise<Response> {
+		return this.request(url, { method: 'PATCH', body: JSON.stringify(data), ...config });
+	}
 
-	public delete(url: string, config?: RequestConfig): Promise<any> {
+	public delete(url: string, config?: RequestConfig): Promise<Response> {
 		return this.request(url, { method: 'DELETE', ...config });
 	}
 

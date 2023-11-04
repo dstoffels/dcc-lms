@@ -27,6 +27,7 @@ const api = {
 			body: JSON.stringify(body),
 		});
 		handleErrors(response);
+		handleSetCookies(response);
 		return response;
 	},
 
@@ -64,4 +65,22 @@ async function handleErrors(response: Response) {
 	if (!response.ok) {
 		throw new Error(await response.text());
 	}
+}
+
+function handleSetCookies(response: Response) {
+	const cookieStore = cookies();
+	response.headers.getSetCookie().forEach((cookieString) => {
+		const splitIndex = cookieString.indexOf(';');
+		const [name, value] = cookieString.substring(0, splitIndex).split('=');
+		const data = cookieString.substring(splitIndex + 1);
+		const attributePairs = data.split(';').map((attr) => attr.trim());
+		const cookieAttributes = {};
+		attributePairs.forEach((pair) => {
+			const [attrName, attrValue] = pair.split('=');
+			cookieAttributes[attrName] = attrValue || true;
+		});
+		// delete cookieAttributes.expires;
+		cookieStore.set({ name, value, httpOnly: true, maxAge: 3600 });
+		// console.log(cookieAttributes);
+	});
 }

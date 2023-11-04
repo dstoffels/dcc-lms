@@ -2,8 +2,9 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import { Box, TextField, Button, Typography } from '@mui/material';
-import api from '@/apis/api';
+import api from '../../utils/api';
 import { useAuth } from '@/context/AuthContext';
+import { cookies } from 'next/headers';
 
 class LoginFormData {
 	email = '';
@@ -51,6 +52,7 @@ const LoginPage: React.FC = () => {
 				width="100%"
 				maxWidth={400}
 				padding={2}
+				action={login}
 				// onSubmit={login}
 			>
 				<TextField
@@ -85,3 +87,13 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
+
+export async function login(rawFormData: FormData) {
+	'use server';
+	const formData = {};
+
+	// @ts-ignore
+	rawFormData.forEach((value, key) => (formData[key] = value));
+
+	await api.post('/auth/login', formData);
+}

@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import api from '@/apis/api';
+import api from '../../../../../utils/api';
 import IDE from '@/components/IDE/IDE';
 import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import { LabTaskAttempt, runCode } from './page';

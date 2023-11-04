@@ -1,6 +1,6 @@
 'use server';
 
-import api from '@/apis/api';
+import api from '../../../../../utils/api';
 import LabAttemptContent from './content';
 import axios from 'axios';
 

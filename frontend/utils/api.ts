@@ -7,12 +7,13 @@ const api = nexios.create({ baseURL: 'http://localhost:8000' });
 api.addMiddleware((reqConfig, response) => {
 	const cookieStore = cookies();
 
-	const Cookie = cookieStore
-		.getAll()
-		.map(({ name, value }) => `${name}=${value}`)
-		.join('; ');
+	// attach client cookies to outgoing request headers
+	let reqCookies = cookieStore.getAll();
+
+	const Cookie = reqCookies.map(({ name, value }) => `${name}=${value}`).join('; ');
 	reqConfig.headers = { ...reqConfig.headers, Cookie };
 
+	// Pass cookies from response to client response
 	if (response) {
 		const setCookie = response?.headers.getSetCookie();
 		// @ts-ignore

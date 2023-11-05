@@ -38,9 +38,14 @@ class Nexios {
 			}
 		}
 
+		const headers = {
+			...this.headers,
+			...updatedConfig.headers,
+		};
+
 		const response = await fetch(this.baseURL + url + queryString, {
-			headers: this.headers,
 			...updatedConfig,
+			headers,
 		});
 
 		for (const middleware of this.middleware) {

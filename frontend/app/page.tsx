@@ -5,7 +5,6 @@ import api from 'utils/api';
 export default async function Home() {
 	const units = await fetchData();
 
-	console.log(units);
 	return (
 		<Box>
 			<Typography variant="h1">Welcome!</Typography>

@@ -2,8 +2,6 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import { Box, TextField, Button, Typography } from '@mui/material';
-// import api from '../../utils/api';
-// import { useAuth } from '@/context/AuthContext';
 import { cookies } from 'next/headers';
 import api from 'utils/api';
 import { redirect } from 'next/navigation';

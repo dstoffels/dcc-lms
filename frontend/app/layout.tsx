@@ -7,7 +7,6 @@ import ThemeRegistry from 'components/ThemeRegistry/ThemeRegistry';
 import './globals.css';
 import api from 'utils/api';
 import { cookies } from 'next/headers';
-import Refresher from 'components/Refresher/Refresher';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,11 +16,11 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+	await refreshAccess();
 	const user = await fetchUser();
 
 	return (
 		<ThemeRegistry options={{ key: 'mui' }}>
-			<Refresher refresher={refreshAccess} />
 			<html lang="en">
 				<body className={inter.className}>{children}</body>
 			</html>
@@ -39,7 +38,7 @@ export async function fetchUser() {
 	}
 }
 
-export async function refreshAccess() {
+async function refreshAccess() {
 	'use server';
 	const cookieStore = cookies();
 

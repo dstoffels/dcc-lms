@@ -41,7 +41,12 @@
 	"compounds": [
 		{
 			"name": "Full Stack",
-			"configurations": ["Python: Django", "Next.js: debug server-side"]
+			"configurations": ["Python: Django", "Next.js: debug server-side"],
+			"presentation": {
+				"hidden": false,
+				"group": "1",
+				"order": 1
+			}
 		}
 	]
 }

@@ -1,5 +1,4 @@
 import { Box, Typography, Button } from '@mui/material';
-import Image from 'next/image';
 import api from 'utils/api';
 
 export default async function Home() {
@@ -7,7 +6,7 @@ export default async function Home() {
 
 	return (
 		<Box>
-			<Typography variant="h1">Welcome!</Typography>
+			<Typography variant="h3">Welcome to devCodeCamp!</Typography>
 			{/* <Typography>{units[0].name}</Typography> */}
 		</Box>
 	);

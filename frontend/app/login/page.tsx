@@ -75,6 +75,6 @@ export async function login(rawFormData: FormData) {
 	const response = await api.post('/auth/login', formData, { cache: 'no-store' });
 
 	if (response.ok) {
-		redirect('/');
+		redirect('/dashboard');
 	}
 }

@@ -1,20 +1,22 @@
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import api, { ResponseCookie } from 'utils/api';
-import { cookies } from 'next/headers';
 
 export async function middleware(request: NextRequest) {
-	// const cookieStore = cookies();
+	const hasRefresh = request.cookies.has('refresh_token');
 	const hasAccess = request.cookies.has('access_token');
+
+	if (!hasRefresh) {
+		const publicRoutes = ['/', '/login', '/register'];
+
+		if (!publicRoutes.includes(request.nextUrl.pathname)) {
+			if (!hasAccess) return NextResponse.rewrite(new URL('/login', request.url));
+		}
+	}
+
 	if (request.nextUrl.pathname.startsWith('/login')) {
 		if (hasAccess) {
 			return NextResponse.rewrite(new URL('/', request.url));
 		}
 	}
-
-	// if (!hasAccess) {
-	// 	const refreshResponse = await api.post('/auth/refresh', {
-	// 		refresh: request.cookies.get('refresh_token')?.value,
-	// 	});
-	// }
 }

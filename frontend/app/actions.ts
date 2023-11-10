@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import api from 'utils/api';
 import { User } from './models';
 import { NextResponse } from 'next/server';
+import { getAuthConfig } from 'utils/auth';
 
 export async function refreshAccess() {
 	'use server';
@@ -29,14 +30,11 @@ export async function refreshAccess() {
 
 export async function fetchUser(): Promise<User | undefined> {
 	'use server';
-	const cookieStore = cookies();
-	const access = cookieStore.get('access_token');
-	if (access) {
-		try {
-			const response = await api.get('/auth/user');
-			return response.json();
-		} catch (error) {
-			console.error(error);
-		}
+	try {
+		const config = getAuthConfig();
+		const response = await api.get('/auth/user', config);
+		return response.json();
+	} catch (error) {
+		console.error(error);
 	}
 }

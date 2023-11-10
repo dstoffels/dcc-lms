@@ -1,10 +1,10 @@
-interface NexiosConfig {
+export interface NexiosConfig {
 	baseURL: string;
 	headers?: HeadersInit;
 	params?: Record<string, string>;
 }
 
-interface RequestConfig extends RequestInit {
+export interface RequestConfig extends RequestInit {
 	params?: Record<string, string>;
 }
 
@@ -22,7 +22,6 @@ class Nexios {
 		this.baseURL = config ? config.baseURL : '';
 		this.headers = config?.headers || {
 			'Content-Type': 'application/json',
-			credentials: 'include',
 		};
 	}
 
@@ -46,6 +45,7 @@ class Nexios {
 		const response = await fetch(this.baseURL + url + queryString, {
 			...updatedConfig,
 			headers,
+			credentials: 'include',
 		});
 
 		for (const middleware of this.middleware) {
@@ -84,6 +84,8 @@ class Nexios {
 	public addMiddleware(middleware: MiddlewareFunction): void {
 		this.middleware.push(middleware);
 	}
+
+	public getConfig = () => ({ headers: this.headers, baseURL: this.baseURL });
 }
 
 const nexios = new Nexios();

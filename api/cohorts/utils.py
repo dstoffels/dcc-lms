@@ -20,7 +20,7 @@ def calculate_drip_schedule(cohort):
     next_date = cohort.start_date
     total_days = 0
 
-    for track_course in cohort.track.track_courses.all():
+    for track_course in cohort.track.courses.all():
         course = track_course.course
         tc_drip = TrackCourseDrip.objects.filter(cohort=cohort, track_course=track_course).first()
         if tc_drip is None or not tc_drip.override:
@@ -28,7 +28,7 @@ def calculate_drip_schedule(cohort):
                 cohort=cohort, track_course=track_course, defaults={"date": next_date}
             )
 
-        for course_module in course.course_modules.all():
+        for course_module in course.modules.all():
             cm_drip = CourseModuleDrip.objects.filter(cohort=cohort, course_module=course_module).first()
             if cm_drip is None or not cm_drip.override:
                 CourseModuleDrip.objects.update_or_create(

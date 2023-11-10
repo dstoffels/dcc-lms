@@ -18,6 +18,14 @@ class LoginView(TokenObtainPairView):
             return set_cookies(request, response)
 
 
+class LogoutView(generics.GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        response = Response(status=status.HTTP_204_NO_CONTENT)
+        response.delete_cookie("refresh_token")
+        response.delete_cookie("access_token")
+        return response
+
+
 class RefreshView(TokenRefreshView):
     def post(self, request, *args, **kwargs):
         if "refresh" not in request.data:

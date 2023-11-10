@@ -2,20 +2,25 @@
 
 import { Button } from '@mui/material';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import api from 'utils/api';
 import { logout } from '../../app/login/actions';
+import { User } from '../../app/models';
 
-const AuthBtn = ({ accessToken }: { accessToken?: RequestCookie }) => {
+const AuthBtn = ({ user }: { user?: User }) => {
 	const router = useRouter();
 
-	const handleLogin = () => router.push('/login');
+	const handleLogin = async () => {
+		router.push('/login');
+		router.refresh();
+	};
 	const handleLogout = async () => {
 		const response = await api.post('/auth/logout');
 		router.push('/login');
+		router.refresh();
 	};
 
-	return accessToken ? (
+	return user ? (
 		<Button onClick={handleLogout}>Log Out</Button>
 	) : (
 		<Button onClick={handleLogin}>Log In</Button>

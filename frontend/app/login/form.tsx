@@ -21,6 +21,7 @@ const LoginForm = ({}) => {
 
 		if (response.ok) {
 			router.push('/dashboard');
+			router.refresh();
 		}
 	};
 

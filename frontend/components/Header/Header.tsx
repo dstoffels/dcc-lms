@@ -2,11 +2,8 @@ import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import * as React from 'react';
 import { User } from '../../app/models';
 import AuthBtn from 'components/AuthBtn/AuthBtn';
-import useCookies from 'utils/useCookies';
 
 const Header = ({ user }: HeaderProps) => {
-	const { cookieStore } = useCookies();
-
 	return (
 		<AppBar>
 			<Toolbar sx={{ justifyContent: 'space-between' }}>
@@ -17,7 +14,7 @@ const Header = ({ user }: HeaderProps) => {
 				<Box component="nav" display="flex"></Box>
 				<Box display="flex" gap={2} alignItems="center">
 					<Typography variant="caption">Hello {user?.username || 'guest'}!</Typography>
-					<AuthBtn accessToken={cookieStore.get('access_token')} />
+					<AuthBtn user={user} />
 				</Box>
 			</Toolbar>
 		</AppBar>

@@ -22,9 +22,7 @@ const LoginPage = () => {
 			flexDirection="column"
 			alignItems="center"
 			justifyContent="center"
-			minHeight="100vh"
-			maxHeight="100vh"
-			padding={2}
+			height="100vh"
 		>
 			<Typography variant="h4" gutterBottom>
 				Login

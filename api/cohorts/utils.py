@@ -1,6 +1,6 @@
 from datetime import timedelta, date
 from courses.models import CourseModuleDrip
-from tracks.models import TrackCourseDrip
+from programs.models import ProgramCourseDrip
 
 
 def get_next_drip(date: date, module_days_needed, total_days, days_per_week):
@@ -22,19 +22,29 @@ def calculate_drip_schedule(cohort):
 
     for track_course in cohort.track.courses.all():
         course = track_course.course
-        tc_drip = TrackCourseDrip.objects.filter(cohort=cohort, track_course=track_course).first()
+        tc_drip = TrackCourseDrip.objects.filter(
+            cohort=cohort, track_course=track_course
+        ).first()
         if tc_drip is None or not tc_drip.override:
             TrackCourseDrip.objects.update_or_create(
                 cohort=cohort, track_course=track_course, defaults={"date": next_date}
             )
 
         for course_module in course.modules.all():
-            cm_drip = CourseModuleDrip.objects.filter(cohort=cohort, course_module=course_module).first()
+            cm_drip = CourseModuleDrip.objects.filter(
+                cohort=cohort, course_module=course_module
+            ).first()
             if cm_drip is None or not cm_drip.override:
                 CourseModuleDrip.objects.update_or_create(
-                    cohort=cohort, course_module=course_module, defaults={"date": next_date}
+                    cohort=cohort,
+                    course_module=course_module,
+                    defaults={"date": next_date},
                 )
 
             module_hours = course_module.module.course_hours
-            module_days_needed = (module_hours / pace.hours_per_week) * pace.days_per_week
-            next_date, total_days = get_next_drip(next_date, module_days_needed, total_days, pace.days_per_week)
+            module_days_needed = (
+                module_hours / pace.hours_per_week
+            ) * pace.days_per_week
+            next_date, total_days = get_next_drip(
+                next_date, module_days_needed, total_days, pace.days_per_week
+            )

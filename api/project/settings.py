@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     "courses",
     "modules",
     "units",
-    "tracks",
+    "programs",
     "cohorts",
     "labs",
 ]
@@ -75,7 +75,9 @@ MIDDLEWARE = [
 
 REST_FRAMEWORK = {
     # 'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
-    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework_simplejwt.authentication.JWTAuthentication"],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication"
+    ],
 }
 
 # Simple JWT Settings
@@ -119,9 +121,15 @@ WSGI_APPLICATION = "project.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("POSTGRES_DB", "NO NAME ENV VAR PROVIDED FOR POSTGRES_DB"),
-        "USER": os.environ.get("POSTGRES_USER", "NO .ENV VAR PROVIDED FOR POSTGRES_USER"),
-        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "NO .ENV VAR PROVIDED FOR POSTGRES_PASSWORD"),
+        "NAME": os.environ.get(
+            "POSTGRES_DB", "NO NAME ENV VAR PROVIDED FOR POSTGRES_DB"
+        ),
+        "USER": os.environ.get(
+            "POSTGRES_USER", "NO .ENV VAR PROVIDED FOR POSTGRES_USER"
+        ),
+        "PASSWORD": os.environ.get(
+            "POSTGRES_PASSWORD", "NO .ENV VAR PROVIDED FOR POSTGRES_PASSWORD"
+        ),
         "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
         "PORT": int(os.environ.get("POSTGRES_PORT", "5432")),
     }

@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Track, TrackCourse
+from .models import Program, ProgramCourse
 
 
 class TrackCourseInline(admin.TabularInline):
-    model = TrackCourse
+    model = ProgramCourse
     extra = 1
 
 
@@ -11,4 +11,4 @@ class TrackAdmin(admin.ModelAdmin):
     inlines = [TrackCourseInline]
 
 
-admin.site.register(Track, TrackAdmin)
+admin.site.register(Program, TrackAdmin)

@@ -27,7 +27,7 @@ class Cohort(models.Model):
     students = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         blank=True,
-        related_name="courses",
+        related_name="cohorts",
         limit_choices_to=Q(role__name="Student"),
     )
     course_gap_days = models.PositiveIntegerField(default=7)

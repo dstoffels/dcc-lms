@@ -38,12 +38,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Role(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    can_manage_content = models.BooleanField(
-        default=False
-    )  # CUD perms for Users, Cohorts, Tracks, Courses, Modules, Units; Content Creation
-    can_manage_cohorts = models.BooleanField(default=False)  # Update perms for Cohorts, Drips
-    can_manage_students = models.BooleanField(default=False)  # Read perms for
-    can_manage_admissions = models.BooleanField(default=False)  # Student payments, contact info
+    # CUD perms for Users, Cohorts, Programs, Courses, Modules, Units; Content Creation
+    can_manage_content = models.BooleanField(default=False)
+    # Update perms for Cohorts, Drips
+    can_manage_cohorts = models.BooleanField(default=False)
+    # Read perms for students
+    can_manage_admissions = models.BooleanField(default=False)
+    # Student payments, contact info
+    can_manage_students = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return self.name

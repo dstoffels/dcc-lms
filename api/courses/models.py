@@ -17,7 +17,9 @@ class Course(models.Model):
     code = models.CharField(max_length=150)
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, default="")
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True
+    )
     prerequisites = models.ManyToManyField("self", symmetrical=False, blank=True)
     tags = models.ManyToManyField(Tag, blank=True, related_name="courses")
     is_public = models.BooleanField(default=False)
@@ -44,7 +46,9 @@ class CourseModule(models.Model):
             original = CourseModule.objects.get(pk=self.pk)
             if self.order > count:
                 self.order = count
-            CourseModule.objects.filter(course=self.course, order=self.order).update(order=original.order)
+            CourseModule.objects.filter(course=self.course, order=self.order).update(
+                order=original.order
+            )
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -57,6 +61,8 @@ class CourseModule(models.Model):
 
 class CourseModuleDrip(models.Model):
     cohort = models.ForeignKey("cohorts.Cohort", on_delete=models.CASCADE)
-    course_module = models.ForeignKey(CourseModule, on_delete=models.CASCADE, related_name="drips")
+    course_module = models.ForeignKey(
+        CourseModule, on_delete=models.CASCADE, related_name="drips"
+    )
     date = models.DateField(blank=True, null=True)
     override = models.BooleanField(default=False)

@@ -62,3 +62,5 @@ class UnitSerializer(BaseSerializer):
 
         if unit.type == "external_url":
             srlzr = ExternalURLSerializer()
+
+        return unit

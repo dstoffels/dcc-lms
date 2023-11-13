@@ -1,10 +1,11 @@
 from rest_framework import serializers
+from CORE.serializers import BaseSerializer
 from courses.serializers import CourseSerializer
 from .models import Program, ProgramCourse
 from rest_framework.exceptions import ValidationError
 
 
-class ProgramCourseSerializer(serializers.ModelSerializer):
+class ProgramCourseSerializer(BaseSerializer):
     course = CourseSerializer(read_only=True)
     course_id = serializers.IntegerField(write_only=True)
     program_id = serializers.IntegerField(write_only=True)
@@ -33,7 +34,7 @@ class ProgramCourseSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
-class ProgramSerializer(serializers.ModelSerializer):
+class ProgramSerializer(BaseSerializer):
     courses = ProgramCourseSerializer(many=True, read_only=True)
 
     class Meta:

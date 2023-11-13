@@ -20,7 +20,9 @@ class Pace(models.Model):
 
 class Cohort(models.Model):
     name = models.CharField(max_length=255)
-    track = models.ForeignKey(Program, on_delete=models.PROTECT, related_name="cohorts")
+    program = models.ForeignKey(
+        Program, on_delete=models.PROTECT, related_name="cohorts"
+    )
     pace = models.ForeignKey(Pace, on_delete=models.PROTECT)
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
@@ -42,4 +44,4 @@ class Cohort(models.Model):
             calculate_drip_schedule(self)
 
     def __str__(self) -> str:
-        return f"{self.name}: {self.track.name} - {self.pace.name}"
+        return f"{self.name}: {self.program.name} - {self.pace.name}"

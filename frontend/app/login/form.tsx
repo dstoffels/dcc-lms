@@ -10,7 +10,7 @@ import { NexiosError } from '../../nexios/nexios';
 
 const LoginForm = ({}) => {
 	const [credentials, setCredentials] = useState({ email: '', password: '' });
-	const [error, setError] = useState(null);
+	const [error, setError] = useState<any | null>(null);
 	const router = useRouter();
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

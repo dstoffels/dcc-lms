@@ -1,8 +1,9 @@
 'use server';
 
+import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 import api from 'utils/api';
-import { attachAPIcookies, cookieStore, getAuthConfig } from 'utils/auth';
+import { attachAPIcookies, getAuthConfig } from 'utils/auth';
 
 export async function login(rawFormData: FormData) {
 	const formData = {};
@@ -15,6 +16,7 @@ export async function login(rawFormData: FormData) {
 	response = attachAPIcookies(response);
 
 	if (response.ok) {
+		revalidateTag('user');
 		redirect('/dashboard');
 	}
 }
@@ -22,9 +24,7 @@ export async function login(rawFormData: FormData) {
 export const logout = async () => {
 	const config = getAuthConfig();
 	let response = await api.post('/auth/logout', {}, config);
-	cookieStore.delete('refresh_token');
-	cookieStore.delete('access_token');
 	response = attachAPIcookies(response);
-	console.log();
+	revalidateTag('user');
 	redirect('/login');
 };

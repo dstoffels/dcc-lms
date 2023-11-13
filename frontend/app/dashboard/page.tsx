@@ -4,9 +4,10 @@ import Header from 'components/Header/Header';
 import { redirectLogin } from 'utils/auth';
 import { revalidatePath } from 'next/cache';
 
-const DashboardPage = async () => {
+const DashboardPage = async ({}) => {
 	redirectLogin();
 	const user = await fetchUser();
+	// const cohorts = await fetchCohorts();
 
 	return (
 		<>

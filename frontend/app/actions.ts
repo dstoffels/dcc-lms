@@ -33,8 +33,12 @@ export async function fetchUser(): Promise<User | null> {
 		const { access_token } = useCookies();
 		if (access_token) {
 			const config = getAuthConfig();
-			const response = await api.get('/auth/user', config);
-			return response.json();
+			const response = await api.get('/auth/user', {
+				...config,
+				cache: 'force-cache',
+				next: { tags: ['user'] },
+			});
+			return await response.json();
 		} else return null;
 	} catch (error) {
 		console.error(error);

@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
-import ThemeRegistry from 'components/ThemeRegistry/ThemeRegistry';
-import Header from 'components/Header/Header';
+import ThemeRegistry from '@components/ThemeRegistry/ThemeRegistry';
+import Header from '@components/Header/Header';
 import { Box } from '@mui/material';
 import { fetchUser } from './actions';
 
@@ -24,7 +24,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 			<html lang="en">
 				<body className={inter.className}>
 					<Header user={user} />
-					{children}
+					<Box pt={8}>{children}</Box>
 				</body>
 			</html>
 		</ThemeRegistry>

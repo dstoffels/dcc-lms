@@ -1,5 +1,5 @@
 import { Box, Typography, Button } from '@mui/material';
-import api from 'utils/api';
+import api from '@utils/api';
 
 export default async function Home() {
 	const units = await fetchData();

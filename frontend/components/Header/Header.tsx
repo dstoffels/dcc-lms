@@ -1,7 +1,7 @@
 import { AppBar, Box, Button, Stack, Toolbar, Typography } from '@mui/material';
 import * as React from 'react';
 import { User } from '../../app/models';
-import AuthBtn from 'components/AuthBtn/AuthBtn';
+import AuthBtn from '@components/AuthBtn/AuthBtn';
 
 const Header = ({ user }: HeaderProps) => {
 	return (

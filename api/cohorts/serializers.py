@@ -3,6 +3,7 @@ from CORE.serializers import BaseSerializer
 from programs.serializers import ProgramSerializer
 from .models import Pace, Cohort
 from rest_framework.exceptions import ValidationError
+from users.serializers import UserSerializer
 
 
 class PaceSerializer(serializers.ModelSerializer):
@@ -17,6 +18,8 @@ class CohortSerializer(serializers.ModelSerializer):
 
     pace_id = serializers.IntegerField(write_only=True)
     pace = PaceSerializer(read_only=True)
+
+    students = UserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Cohort

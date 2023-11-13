@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers';
 
-import api from 'utils/api';
+import api from '@utils/api';
 import { User } from './models';
 import { NextResponse } from 'next/server';
-import { getAuthConfig } from 'utils/auth';
-import useCookies from 'utils/useCookies';
+import { getAuthConfig } from '@utils/auth';
+import useCookies from '@utils/useCookies';
 
 export async function refreshAccess() {
 	'use server';

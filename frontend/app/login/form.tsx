@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 
-import api from 'utils/api';
+import api from '@utils/api';
 import { useRouter } from 'next/navigation';
 import { NexiosError } from '../../nexios/nexios';
 
@@ -50,6 +50,7 @@ const LoginForm = ({}) => {
 					type="email"
 					variant="outlined"
 					margin="normal"
+					required
 					fullWidth
 					value={credentials.email}
 					onChange={handleChange}
@@ -60,6 +61,7 @@ const LoginForm = ({}) => {
 					type="password"
 					variant="outlined"
 					margin="normal"
+					required
 					fullWidth
 					value={credentials.password}
 					onChange={handleChange}
@@ -71,8 +73,7 @@ const LoginForm = ({}) => {
 					Create Account
 				</Button>
 			</Stack>
-			{error && <Typography color="error">Email: {error.email[0]}</Typography>}
-			{error && <Typography color="error">Password: {error.password[0]}</Typography>}
+			{error && <Typography color="error">{error.detail}</Typography>}
 		</>
 	);
 };

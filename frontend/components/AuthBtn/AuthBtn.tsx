@@ -3,7 +3,7 @@
 import { Button } from '@mui/material';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { useRouter, usePathname } from 'next/navigation';
-import api from 'utils/api';
+import api from '@utils/api';
 import { logout } from '../../app/login/actions';
 import { User } from '../../app/models';
 

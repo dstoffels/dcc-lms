@@ -2,8 +2,8 @@
 
 import { revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
-import api from 'utils/api';
-import { attachAPIcookies, getAuthConfig } from 'utils/auth';
+import api from '@utils/api';
+import { attachAPIcookies, getAuthConfig } from '@utils/auth';
 
 export async function login(rawFormData: FormData) {
 	const formData = {};

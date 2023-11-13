@@ -6,7 +6,6 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class CohortLCView(views.LCView):
-    # queryset = Cohort.objects.filter()
     serializer_class = CohortSerializer
     permission_classes = (IsAuthenticated,)
 

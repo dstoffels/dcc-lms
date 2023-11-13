@@ -26,10 +26,7 @@ class Nexios {
 	}
 
 	private async request(url: string, config: RequestConfig): Promise<Response> {
-		const { params, ...restConfig } = config;
-		const queryString = params ? '?' + new URLSearchParams(params).toString() : '';
-
-		let updatedConfig = { ...restConfig };
+		let updatedConfig = config;
 		for (let middleware of this.middleware) {
 			const result = middleware(updatedConfig);
 			if (result) {
@@ -42,18 +39,24 @@ class Nexios {
 			...updatedConfig.headers,
 		};
 
-		const response = await fetch(this.baseURL + url + queryString, {
+		const reqConfig = {
 			...updatedConfig,
 			headers,
 			credentials: 'include',
-		});
+		};
+
+		const reqUrl = this.baseURL + url;
+
+		// @ts-ignore
+		const response = await fetch(reqUrl, reqConfig);
 
 		for (const middleware of this.middleware) {
 			middleware(updatedConfig, response);
 		}
 
 		if (!response.ok) {
-			throw new Error(await response.text());
+			// @ts-ignore
+			throw new NexiosError(reqConfig, response, reqUrl, await response.json());
 		}
 		return response;
 	}
@@ -91,3 +94,27 @@ class Nexios {
 const nexios = new Nexios();
 
 export default nexios;
+
+export class NexiosError {
+	public request: NexiosConfig;
+	public response: Response;
+	public body: object | null = null;
+	public reqUrl: string;
+	public message: string = '';
+
+	constructor(reqConfig: NexiosConfig, response: Response, reqUrl: string, responseBody: object) {
+		this.request = reqConfig;
+		this.response = response;
+		this.body = responseBody;
+		this.reqUrl = reqUrl;
+
+		const red = '\x1b[31m';
+		const reset = '\x1b[0m';
+
+		// @ts-ignore
+		this.message = `${red}${this.request.method}: ${reqUrl} - ${response.status} (${response.statusText})\n${reset}`;
+
+		console.log(this.message);
+		console.log(this.body);
+	}
+}

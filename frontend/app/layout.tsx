@@ -16,7 +16,8 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-	const user = await fetchUser();
+	let user;
+	user = await fetchUser();
 
 	return (
 		<ThemeRegistry options={{ key: 'mui' }}>

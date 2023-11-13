@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, Stack, Toolbar, Typography } from '@mui/material';
 import * as React from 'react';
 import { User } from '../../app/models';
 import AuthBtn from 'components/AuthBtn/AuthBtn';
@@ -12,10 +12,10 @@ const Header = ({ user }: HeaderProps) => {
 					<Typography variant="caption">devCodeCamp</Typography>
 				</Box>
 				<Box component="nav" display="flex"></Box>
-				<Box display="flex" gap={2} alignItems="center">
-					<Typography variant="caption">Hello {user?.username || 'guest'}!</Typography>
+				<Stack>
 					<AuthBtn user={user} />
-				</Box>
+					{user && <Typography variant="caption">Hello {user?.username}!</Typography>}
+				</Stack>
 			</Toolbar>
 		</AppBar>
 	);

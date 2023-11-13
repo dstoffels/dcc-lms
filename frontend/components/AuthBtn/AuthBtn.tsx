@@ -9,6 +9,7 @@ import { User } from '../../app/models';
 
 const AuthBtn = ({ user }: { user?: User }) => {
 	const router = useRouter();
+	const pathname = usePathname();
 
 	const handleLogin = async () => {
 		router.push('/login');
@@ -23,7 +24,7 @@ const AuthBtn = ({ user }: { user?: User }) => {
 	return user ? (
 		<Button onClick={handleLogout}>Log Out</Button>
 	) : (
-		<Button onClick={handleLogin}>Log In</Button>
+		pathname !== '/login' && <Button onClick={handleLogin}>Log In</Button>
 	);
 };
 

@@ -4,16 +4,15 @@ import api from 'utils/api';
 import { User } from './models';
 import { NextResponse } from 'next/server';
 import { getAuthConfig } from 'utils/auth';
+import useCookies from 'utils/useCookies';
 
 export async function refreshAccess() {
 	'use server';
 
-	const cookieStore = cookies();
-	const refresh = cookieStore.get('refresh_token');
+	const { cookieStore, access_token, refresh_token } = useCookies();
 
-	if (refresh) {
-		const access = cookieStore.get('access_token');
-		if (!access) {
+	if (refresh_token) {
+		if (!access_token) {
 			try {
 				const response = await api.post('/auth/refresh');
 			} catch (error) {
@@ -28,13 +27,17 @@ export async function refreshAccess() {
 	}
 }
 
-export async function fetchUser(): Promise<User | undefined> {
+export async function fetchUser(): Promise<User | null> {
 	'use server';
 	try {
-		const config = getAuthConfig();
-		const response = await api.get('/auth/user', config);
-		return response.json();
+		const { access_token } = useCookies();
+		if (access_token) {
+			const config = getAuthConfig();
+			const response = await api.get('/auth/user', config);
+			return response.json();
+		} else return null;
 	} catch (error) {
 		console.error(error);
+		return null;
 	}
 }

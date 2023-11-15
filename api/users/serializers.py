@@ -6,7 +6,10 @@ from rest_framework import serializers
 class RoleSerialier(BaseSerializer):
     class Meta:
         model = Role
-        fields = "__all__"
+        fields = (
+            "id",
+            "name",
+        )
 
 
 class UserSerializer(BaseSerializer):
@@ -15,7 +18,15 @@ class UserSerializer(BaseSerializer):
 
     class Meta:
         model = User
-        fields = ("id", "email", "username", "first_name", "last_name", "role", "password")
+        fields = (
+            "id",
+            "email",
+            "username",
+            "first_name",
+            "last_name",
+            "role",
+            "password",
+        )
 
     def create(self, validated_data):
         user = User(

@@ -2,10 +2,20 @@ from django.db import models
 
 
 class Unit(models.Model):
-    module = models.ForeignKey("modules.Module", on_delete=models.CASCADE, related_name="units", blank=True)
+    module = models.ForeignKey(
+        "modules.Module", on_delete=models.CASCADE, related_name="units", blank=True
+    )
     name = models.CharField(max_length=255)
     order = models.PositiveIntegerField(blank=True)
     follows_drip = models.BooleanField(default=True)
+
+    UNIT_TYPE_CHOICES = [
+        ("external_url", "External URL"),
+        ("lab", "Lab"),
+        ("assignment", "Assignment"),
+    ]
+
+    type = models.CharField(max_length=50, choices=UNIT_TYPE_CHOICES)
 
     def save(self, *args, **kwargs) -> None:
         count = Unit.objects.filter(module=self.module).count()
@@ -15,16 +25,10 @@ class Unit(models.Model):
             original = Unit.objects.get(pk=self.pk)
             if self.order > count:
                 self.order = count
-            Unit.objects.filter(module=self.module, order=self.order).update(order=original.order)
+            Unit.objects.filter(module=self.module, order=self.order).update(
+                order=original.order
+            )
         super().save(*args, **kwargs)
-
-    UNIT_TYPE_CHOICES = [
-        ("external_url", "External URL"),
-        ("lab", "Lab"),
-        ("assignment", "Assignment"),
-    ]
-
-    type = models.CharField(max_length=50, choices=UNIT_TYPE_CHOICES)
 
     class Meta:
         ordering = ["order"]

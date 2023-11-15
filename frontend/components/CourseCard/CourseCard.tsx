@@ -2,18 +2,20 @@
 
 import { Cohort } from '@utils/models';
 import { Box, Card, CardActionArea, CardContent, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
-const CohortCard = ({ cohort }: { cohort: Cohort }) => {
+const CourseCard = ({ cohort }: { cohort: Cohort }) => {
+	const router = useRouter();
 	return (
 		<Card sx={{ flexBasis: '300px' }}>
-			<CardActionArea>
+			<CardActionArea onClick={() => router.push(`/cohort/${cohort.id}`)}>
 				<CardContent>
 					<Typography variant="h6">{cohort.name}</Typography>
-					<Typography>{cohort.start_date}</Typography>
+					<Typography>{new Date(cohort.start_date).toDateString()}</Typography>
 				</CardContent>
 			</CardActionArea>
 		</Card>
 	);
 };
 
-export default CohortCard;
+export default CourseCard;

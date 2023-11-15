@@ -1,6 +1,6 @@
 from CORE import views
-from .models import Cohort, Pace
-from .serializers import PaceSerializer, CohortSerializer
+from .models import Cohort, Pace, CohortCourse
+from .serializers import PaceSerializer, CohortSerializer, CohortCourseSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 
@@ -10,7 +10,9 @@ class CohortLCView(views.LCView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return Cohort.objects.filter(students__id=self.request.user.id)
+        cohorts = Cohort.objects.filter(students__id=self.request.user.id)
+        # cohorts = Cohort.objects.all()
+        return cohorts
 
 
 class CohortRUDView(views.RUDView):
@@ -22,3 +24,10 @@ class CohortRUDView(views.RUDView):
 class PacesView(views.LCView):
     queryset = Pace.objects.all()
     serializer_class = PaceSerializer
+
+
+class CohortCourseRUDView(views.RUDView):
+    queryset = CohortCourse.objects.all()
+    serializer_class = CohortCourseSerializer
+    lookup_field = "id"
+    lookup_url_kwarg = "course_id"

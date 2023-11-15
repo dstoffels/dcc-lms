@@ -34,9 +34,18 @@ class ProgramCourseSerializer(BaseSerializer):
         return super().update(instance, validated_data)
 
 
+program_fields = ["id", "name", "code", "description"]
+
+
+class ProgramSerializerBase(BaseSerializer):
+    class Meta:
+        model = Program
+        fields = program_fields
+
+
 class ProgramSerializer(BaseSerializer):
     courses = ProgramCourseSerializer(many=True, read_only=True)
 
     class Meta:
         model = Program
-        fields = ["id", "name", "description", "courses"]
+        fields = [*program_fields, "courses"]

@@ -31,7 +31,9 @@ class LabTask(models.Model):
             original = LabTask.objects.get(pk=self.pk)
             if self.order > count:
                 self.order = count
-            LabTask.objects.filter(lab=self.lab, order=self.order).update(order=original.order)
+            LabTask.objects.filter(lab=self.lab, order=self.order).update(
+                order=original.order
+            )
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:
@@ -40,7 +42,11 @@ class LabTask(models.Model):
 
 class LabTaskAttempt(models.Model):
     task = models.ForeignKey(LabTask, on_delete=models.CASCADE)
-    student = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="lab_task_attempts")
+    student = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="lab_task_attempts",
+    )
     code = models.TextField(blank=True, default="")
     messages = models.JSONField(default=list, blank=True)
     hint = models.TextField(blank=True, default="")

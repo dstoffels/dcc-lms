@@ -39,13 +39,15 @@ class ProgramCourse(models.Model):
         unique_together = ["program", "course"]
 
 
-class ProgramCourseDrip(models.Model):
-    """Student Layer"""
+# class ProgramCourseDrip(models.Model):
+#     """Student Layer"""
 
-    cohort = models.ForeignKey("cohorts.Cohort", on_delete=models.CASCADE)
-    program_course = models.ForeignKey(ProgramCourse, on_delete=models.CASCADE)
-    date = models.DateField(blank=True, null=True)
-    override = models.BooleanField(default=False)
+#     cohort = models.ForeignKey("cohorts.Cohort", on_delete=models.CASCADE)
+#     program_course = models.ForeignKey(ProgramCourse, on_delete=models.CASCADE)
+#     date = models.DateField(blank=True, null=True)
+#     override = models.BooleanField(default=False)
+
+from cohorts.models import CohortCourse
 
 
 class StudentCourse(models.Model):
@@ -54,7 +56,7 @@ class StudentCourse(models.Model):
     student = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="courses"
     )
-    course = models.ForeignKey(ProgramCourseDrip, on_delete=models.PROTECT)
+    course = models.ForeignKey(CohortCourse, on_delete=models.PROTECT)
 
     def __str__(self):
         return f"{self.student.username} - {self.course.name}"

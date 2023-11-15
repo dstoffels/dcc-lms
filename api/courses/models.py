@@ -21,7 +21,7 @@ class Course(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True
     )
     prerequisites = models.ManyToManyField("self", symmetrical=False, blank=True)
-    tags = models.ManyToManyField(Tag, blank=True, related_name="courses")
+    tags = models.ManyToManyField(Tag, blank=True)
     is_public = models.BooleanField(default=False)
     is_template = models.BooleanField(default=False)
     is_published = models.BooleanField(default=False)
@@ -59,10 +59,10 @@ class CourseModule(models.Model):
         unique_together = ["course", "module"]
 
 
-class CourseModuleDrip(models.Model):
-    cohort = models.ForeignKey("cohorts.Cohort", on_delete=models.CASCADE)
-    course_module = models.ForeignKey(
-        CourseModule, on_delete=models.CASCADE, related_name="drips"
-    )
-    date = models.DateField(blank=True, null=True)
-    override = models.BooleanField(default=False)
+# class CourseModuleDrip(models.Model):
+#     cohort = models.ForeignKey("cohorts.Cohort", on_delete=models.CASCADE)
+#     course_module = models.ForeignKey(
+#         CourseModule, on_delete=models.CASCADE, related_name="drips"
+#     )
+#     date = models.DateField(blank=True, null=True)
+#     override = models.BooleanField(default=False)

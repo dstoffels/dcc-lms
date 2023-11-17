@@ -1,7 +1,7 @@
-'use client';
-
 import { Box, Button, Typography } from '@mui/material';
 import { Lab, Unit } from '../../lib/types';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
 
 const Lab = ({ unit }: { unit: Unit<Lab> }) => {
 	return (

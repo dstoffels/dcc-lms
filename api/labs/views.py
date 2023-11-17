@@ -35,18 +35,36 @@ class LabTaskRUDView(views.RUDView):
     serializer_class = LabTaskSerializer
 
 
+class LabTaskAttemptRetrieveView(views.BaseView):
+    def get(self, request, *args, **kwargs):
+        attempt, created = LabTaskAttempt.objects.get_or_create(
+            student=self.request.user, task_id=self.kwargs.get("task_id")
+        )
+
+        status = 201 if created else 200
+        ser = LabTaskAttemptSerializer(attempt)
+        return Response(ser.data, status)
+
+
 class LabTaskAttemptLCView(views.LCView):
     permission_classes = (IsAuthenticated,)
     serializer_class = LabTaskAttemptSerializer
 
     def perform_create(self, serializer):
         try:
-            serializer.save(student=self.request.user, task_id=self.kwargs.get("task_id"))
+            serializer.save(
+                student=self.request.user, task_id=self.kwargs.get("task_id")
+            )
         except IntegrityError:
-            raise ValidationError({"error": "A task attempt for this student already exists."})
+            # return existing task attempt ?
+            raise ValidationError(
+                {"error": "A task attempt for this student already exists."}
+            )
 
     def get_queryset(self):
-        return LabTaskAttempt.objects.filter(task__lab_id=self.kwargs.get("lab_id"), student=self.request.user)
+        return LabTaskAttempt.objects.filter(
+            task__lab_id=self.kwargs.get("lab_id"), student=self.request.user
+        )
 
 
 class LabTaskAttemptRUDView(views.RUDView):
@@ -97,7 +115,9 @@ class CompleteAttemptView(generics.GenericAPIView):
 
         while response is None:
             try:
-                response = requests.post(url, json=request_body, headers=headers, timeout=3).json()
+                response = requests.post(
+                    url, json=request_body, headers=headers, timeout=3
+                ).json()
             except requests.exceptions.Timeout:
                 pass
 
@@ -109,7 +129,9 @@ class CompleteAttemptView(generics.GenericAPIView):
             attempt.save()
         else:
             attempt.is_complete = False
-            attempt.hint = "Double-check your code, review your resources or click get help below!"
+            attempt.hint = (
+                "Double-check your code, review your resources or click get help below!"
+            )
             attempt.save()
 
         return Response(LabTaskAttemptSerializer(attempt).data)
@@ -168,7 +190,9 @@ class TaskAssistantView(generics.GenericAPIView):
 
         while response is None:
             try:
-                response = requests.post(url, json=request_body, headers=headers, timeout=10).json()
+                response = requests.post(
+                    url, json=request_body, headers=headers, timeout=10
+                ).json()
             except requests.exceptions.Timeout:
                 pass
 

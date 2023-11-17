@@ -36,9 +36,9 @@ class LabTaskRUDView(views.RUDView):
 
 
 class LabTaskAttemptRetrieveView(views.BaseView):
-    def get(self, request, *args, **kwargs):
+    def get(self, request, lab_id, task_id):
         attempt, created = LabTaskAttempt.objects.get_or_create(
-            student=self.request.user, task_id=self.kwargs.get("task_id")
+            student=request.user, task_id=task_id
         )
 
         status = 201 if created else 200

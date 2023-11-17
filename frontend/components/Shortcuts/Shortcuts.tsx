@@ -1,5 +1,5 @@
 import { loader } from '@monaco-editor/react';
-import useMonaco from '@/hooks/useMonaco';
+import useMonaco from '../../hooks/useMonaco';
 import { useEffect } from 'react';
 
 const Shortcuts = ({ onSave, onEnter }: ShortCutsProps) => {

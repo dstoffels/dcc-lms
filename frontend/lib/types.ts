@@ -24,7 +24,7 @@ export type Pace = {
 	days_per_week: number;
 };
 
-export type Task = {
+export type LabTask = {
 	id: number;
 	lab_id: number;
 	description: string;
@@ -35,12 +35,21 @@ export type Task = {
 export type Lab = {
 	due_date: string;
 	points: number;
-	tasks: Task[];
+	tasks: LabTask[];
 };
 
 export type ExternalUrl = {
 	url: string;
 	load_in_new_tab: boolean;
+};
+
+export type LabTaskAttempt = {
+	id: number;
+	code: string;
+	is_complete: boolean;
+	messages: string[];
+	hint: string;
+	task: LabTask;
 };
 
 export type Unit<Tdata extends Lab | ExternalUrl> = {

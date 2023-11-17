@@ -43,13 +43,13 @@ export type ExternalUrl = {
 	load_in_new_tab: boolean;
 };
 
-export type Unit = {
+export type Unit<Tdata extends Lab | ExternalUrl> = {
 	id: number;
 	module_id: number;
 	name: string;
 	order: number;
 	type: string;
-	data: Lab | ExternalUrl;
+	data: Tdata;
 };
 
 export type Module = {
@@ -58,7 +58,7 @@ export type Module = {
 	description: string;
 	course_hours: number;
 	is_published: boolean;
-	units: Unit[];
+	units: Unit<Lab | ExternalUrl>[];
 };
 
 export type CourseModule = {
@@ -106,4 +106,61 @@ export type Cohort = {
 	pace: Pace;
 	students: User[];
 	program: Program;
+	courses: CohortCourseBase[];
+};
+
+export type CohortCourseBase = {
+	id: number;
+	date: string;
+	override: boolean;
+	cohort_id: number;
+	order: number;
+	follows_drip: boolean;
+	course_id: number;
+	name: string;
+	code: string;
+	description: string;
+	is_public: boolean;
+	is_published: boolean;
+};
+
+export type CohortCourse = CohortCourseBase & {
+	modules: CohortModule[];
+	students: User[];
+};
+
+export type CohortModule = {
+	id: number;
+	date: string;
+	override: boolean;
+	order: number;
+	follows_drip: boolean;
+	module_id: number;
+	name: string;
+	description: string;
+	course_hours: number;
+	is_published: boolean;
+	units: Unit<Lab | ExternalUrl>[];
+	// "units": [
+	//     {
+	//         "id": 1,
+	//         "module_id": 1,
+	//         "name": "Variables, Data Types & Operators",
+	//         "order": 1,
+	//         "type": "lab",
+	//         "data": {
+	//             "due_date": "2023-10-31",
+	//             "points": 50,
+	//             "tasks": [
+	//                 {
+	//                     "id": 1,
+	//                     "lab_id": 1,
+	//                     "description": "Declare a let variable and assign it your name.",
+	//                     "language": "javascript",
+	//                     "order": 1
+	//                 }
+	//             ]
+	//         }
+	//     }
+	// ]
 };

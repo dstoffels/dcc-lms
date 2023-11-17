@@ -1,6 +1,6 @@
 import api from '@utils/api';
 import { getAuthConfig } from '@utils/auth';
-import { Cohort } from '@utils/models';
+import { Cohort } from '../../lib/types';
 
 export async function fetchCohorts(): Promise<Cohort[]> {
 	try {
